@@ -5,20 +5,22 @@ import Link from "next/link";
 import Button from "./Button";
 
 const Logo = () => {
-  //update the size of the logo when the size of the screen changes
-  const [width, setWidth] = useState(0);
+  // Update the size of the logo when the size of the screen changes
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-  const updateWidth = () => {
+  const updateDimensions = () => {
     const newWidth = window.innerWidth;
-    setWidth(newWidth);
+    const newHeight = newWidth < 1024 ? 45 : 74;
+    setDimensions({ width: newWidth, height: newHeight });
   };
 
   useEffect(() => {
-    window.addEventListener("resize", updateWidth);
-    updateWidth();
+    window.addEventListener("resize", updateDimensions);
+    updateDimensions();
+    return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
-  // change between the logo and the button when the user scrolls
+  // Change between the logo and the button when the user scrolls
   const [showButton, setShowButton] = useState(false);
 
   const changeNavButton = () => {
@@ -31,6 +33,7 @@ const Logo = () => {
 
   useEffect(() => {
     window.addEventListener("scroll", changeNavButton);
+    return () => window.removeEventListener("scroll", changeNavButton);
   }, []);
 
   return (
@@ -39,9 +42,9 @@ const Logo = () => {
         <Image
           src="/images/mtg2.png"
           alt="Logo"
-          width={width < 1024 ? "150" : "250"}
-          height={width < 1024 ? "45" : "74"}
-          className="relative"
+          width={dimensions.width < 1024 ? 150 : 250}
+          height={dimensions.height < 1024 ? 100 : 200} 
+          className="object-contain"
         />
       </Link>
       <div
