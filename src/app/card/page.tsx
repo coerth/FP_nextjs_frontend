@@ -11,7 +11,7 @@ export default async function Page() {
           <tr>
             <th>ID</th>
             <th>Artist</th>
-            <th>Arena ID</th>
+            <th>CMC</th>
             <th>Scryfall Set URI</th>
             <th>Image</th>
           </tr>
@@ -21,7 +21,7 @@ export default async function Page() {
             <tr key={card.id}>
               <td>{card.id}</td>
               <td>{card.artist}</td>
-              <td>{card.arena_id}</td>
+              <td>{card.cmc}</td>
               <td>
                 <a href={card.scryfall_set_uri} target="_blank" rel="noopener noreferrer">
                   Link

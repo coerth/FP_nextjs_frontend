@@ -7,15 +7,11 @@ export async function fetchCards(limit: number) {
       },
       body: JSON.stringify({
         query: `
-          query Cards($limit: Int) {
-            cards(limit: $limit) {
-              id
-              artist
-              cmc
-              scryfall_set_uri
-              image_uris {
-                small
-              }
+          query Sets($limit: Int) {
+            sets(limit: $limit) {
+              set_id,
+              set_name,
+              set_uri
             }
           }
         `,
@@ -24,5 +20,5 @@ export async function fetchCards(limit: number) {
     });
   
     const result = await response.json();
-    return result.data.cards;
+    return result.data.sets;
   }
