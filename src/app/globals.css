@@ -25,3 +25,20 @@ body {
     text-wrap: balance;
   }
 }
+
+  /* Custom card styles */
+  .mtg-card {
+    @apply py-4 bg-black shadow rounded-lg border border-gray-400 p-4;
+  }
+
+  .mtg-card-header {
+    @apply pb-0 pt-2 px-4 flex flex-col items-center text-center;
+  }
+
+  .mtg-card-body {
+    @apply overflow-visible py-2;
+  }
+
+  .mtg-card-image {
+    @apply object-cover rounded-xl;
+  }

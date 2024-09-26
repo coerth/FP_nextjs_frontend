@@ -1,5 +1,7 @@
 // src/utils/fetchCards.ts
-export async function fetchCards(limit: number) {
+import { MtGCard } from "@/types/mtgCard";
+
+export async function fetchCards(limit: number, skip: number): Promise<MtGCard[]> {
     const response = await fetch('http://localhost:4000/graphql', {
       method: 'POST',
       headers: {
@@ -7,22 +9,25 @@ export async function fetchCards(limit: number) {
       },
       body: JSON.stringify({
         query: `
-          query Cards($limit: Int) {
-            cards(limit: $limit) {
+           query Cards($limit: Int, $skip: Int) {
+            cards(limit: $limit, skip: $skip) {
               id
               artist
-              cmc
+              arena_id
               scryfall_set_uri
               image_uris {
-                small
+                border_crop
               }
+              cmc
+              name
+              set_name
             }
           }
         `,
-        variables: { limit },
+        variables: { limit, skip },
       }),
     });
   
     const result = await response.json();
-    return result.data.cards;
+    return result.data.cards as MtGCard[];
   }

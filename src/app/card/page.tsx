@@ -1,39 +1,52 @@
-import { fetchCards } from '../../utils/fetchCards';
+'use client';
 
-export default async function Page() {
-    let cards = await fetchCards(10);
+import React, { useState, useEffect } from 'react';
+import { fetchCards } from '../../utils/fetchCards';
+import { MtGCard } from '@/types/mtgCard';
+
+export default function Page() {
+  const [cards, setCards] = useState<MtGCard[]>([]);
+  const [page, setPage] = useState(1);
+  const limit = 10;
+
+  const loadCards = async (page) => {
+    const skip = (page - 1) * limit;
+    const newCards: MtGCard[] = await fetchCards(limit, skip);
+    setCards((prevCards) => [...prevCards, ...newCards]);
+  };
+
+  useEffect(() => {
+    loadCards(page);
+  }, [page]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+      setPage((prevPage) => prevPage + 1);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <div>
-      <h1>Cards</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Artist</th>
-            <th>CMC</th>
-            <th>Scryfall Set URI</th>
-            <th>Image</th>
-          </tr>
-        </thead>
-        <tbody>
-          {cards.map((card) => (
-            <tr key={card.id}>
-              <td>{card.id}</td>
-              <td>{card.artist}</td>
-              <td>{card.cmc}</td>
-              <td>
-                <a href={card.scryfall_set_uri} target="_blank" rel="noopener noreferrer">
-                  Link
-                </a>
-              </td>
-              <td>
-                <img src={card.image_uris.small} alt={card.artist} />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Cards</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {cards.map((card) => (
+          <div key={card.id} className="mtg-card ">
+            <div className="mtg-card-header">
+              
+              <h4 className="font-bold text-lg">{card.name}</h4>
+            </div>
+            <div className="mtg-card-image">
+              <img src={card.image_uris.border_crop} alt={card.artist} className="custom-card-image mt-2" />
+            </div>
+              <small className="text-gray-500">CMC: {card.cmc}</small>
+             
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
