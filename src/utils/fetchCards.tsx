@@ -1,7 +1,7 @@
 // src/utils/fetchCards.ts
 import { MtGCard } from "@/types/mtgCard";
 
-export async function fetchCards(limit: number, skip: number): Promise<MtGCard[]> {
+export async function fetchCards(limit: number, skip: number, lang: string): Promise<MtGCard[]> {
     const response = await fetch('http://localhost:4000/graphql', {
       method: 'POST',
       headers: {
@@ -9,8 +9,8 @@ export async function fetchCards(limit: number, skip: number): Promise<MtGCard[]
       },
       body: JSON.stringify({
         query: `
-           query Cards($limit: Int, $skip: Int) {
-            cards(limit: $limit, skip: $skip) {
+           query Cards($skip: Int, $limit: Int, $lang: String) {
+            cards(skip: $skip, limit: $limit, lang: $lang) {
               id
               artist
               arena_id
@@ -21,10 +21,12 @@ export async function fetchCards(limit: number, skip: number): Promise<MtGCard[]
               cmc
               name
               set_name
+              mtgo_id
+              lang
             }
           }
         `,
-        variables: { limit, skip },
+        variables: { limit, skip, lang },
       }),
     });
   

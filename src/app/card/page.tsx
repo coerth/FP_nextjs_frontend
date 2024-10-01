@@ -7,11 +7,11 @@ import { MtGCard } from '@/types/mtgCard';
 export default function Page() {
   const [cards, setCards] = useState<MtGCard[]>([]);
   const [page, setPage] = useState(1);
-  const limit = 10;
+  const limit = 20;
 
   const loadCards = async (page) => {
     const skip = (page - 1) * limit;
-    const newCards: MtGCard[] = await fetchCards(limit, skip);
+    const newCards: MtGCard[] = await fetchCards(limit, skip, "en");
     setCards((prevCards) => [...prevCards, ...newCards]);
   };
 
@@ -21,8 +21,13 @@ export default function Page() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
-      setPage((prevPage) => prevPage + 1);
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+      const clientHeight = document.documentElement.clientHeight || window.innerHeight;
+
+      if (scrollTop + clientHeight >= scrollHeight - 5) {
+        setPage((prevPage) => prevPage + 1);
+      }
     };
 
     window.addEventListener('scroll', handleScroll);

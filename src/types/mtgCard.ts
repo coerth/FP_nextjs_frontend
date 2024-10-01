@@ -9,4 +9,6 @@ export interface MtGCard {
     mc: string;
     name: string;
     set_name: string;
+    mtgo_id: number;
+    lang: string;
   }
