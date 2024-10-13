@@ -1,11 +1,12 @@
 // src/utils/fetchCards.ts
 import { MtGCard } from "@/types/mtgCard";
 
-export async function fetchCards(limit: number, skip: number, lang: string): Promise<MtGCard[]> {
+export async function fetchCards(limit: number, skip: number, lang: string, token: string): Promise<MtGCard[]> {
     const response = await fetch('http://localhost:4000/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({
         query: `

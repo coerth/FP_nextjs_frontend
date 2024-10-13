@@ -24,21 +24,43 @@ body {
   .text-balance {
     text-wrap: balance;
   }
-}
 
   /* Custom card styles */
   .mtg-card {
-    @apply py-4 bg-black shadow rounded-lg border border-gray-400 p-4;
+    @apply bg-black shadow rounded-lg border border-gray-400 max-w-xs max-h-80 my-8 transition-transform transform hover:scale-105 hover:shadow-lg;
+    position: relative;
   }
 
   .mtg-card-header {
-    @apply pb-0 pt-2 px-4 flex flex-col items-center text-center;
+    @apply absolute top-0 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-75 text-white w-full text-center py-2 rounded-t-lg;
   }
 
   .mtg-card-body {
-    @apply overflow-visible py-2;
+    @apply relative overflow-hidden flex flex-col items-center h-full w-full;
+  }
+
+  .mtg-card-image-container {
+    @apply relative w-full h-full border border-gray-400 rounded-lg overflow-hidden;
   }
 
   .mtg-card-image {
-    @apply object-cover rounded-xl;
+    @apply object-cover w-full h-full;
   }
+
+  .mtg-card-footer {
+    @apply mt-2 text-center;
+  }
+
+  .mtg-card-full-image {
+    @apply absolute top-0 left-0 w-full h-full object-cover rounded-lg;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    z-index: 10;
+  }
+
+  .mtg-card:hover .mtg-card-full-image {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

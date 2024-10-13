@@ -14,12 +14,12 @@ const Navbar = () => {
             </div>
             <ul className="hidden md:flex gap-x-6 text-white">
               <li>
-                <Link href="card">
+                <Link href="cards">
                   <p>Cards</p>
                 </Link>
               </li>
               <li>
-                <Link href="/set">
+                <Link href="/sets">
                   <p>Sets</p>
                 </Link>
               </li>
