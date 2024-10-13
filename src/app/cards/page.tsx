@@ -1,24 +1,35 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
 import { fetchCards } from '../../utils/fetchCards';
 import { MtGCard } from '@/types/mtgCard';
-import { useUser } from '@auth0/nextjs-auth0';
+import DisplayCard from '@/components/DisplayCard';
+import CardModal from '@/components/CardModal';
 
 export default function Page() {
   const [cards, setCards] = useState<MtGCard[]>([]);
-  const [page, setPage] = useState(1);
-  
+  const [selectedCard, setSelectedCard] = useState<MtGCard | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [page, setPage] = useState<number>(1);
+
   const limit = 20;
 
-  const loadCards = async (page) => {
+  const loadCards = async (page: number) => {
     const skip = (page - 1) * limit;
     const response = await fetch('/api/auth/token');
     const { accessToken } = await response.json();
     console.log('accessToken', accessToken);
     const newCards: MtGCard[] = await fetchCards(limit, skip, "en", accessToken);
-    setCards((prevCards) => [...prevCards, ...newCards]);
+
+    // Add page number to each card
+    const cardsWithPage = newCards.map(card => ({ ...card, page }));
+
+    // Avoid duplicates by checking if the card already exists in the state
+    setCards((prevCards) => {
+      const cardIds = new Set(prevCards.map(card => card.id));
+      const uniqueCards = cardsWithPage.filter(card => !cardIds.has(card.id));
+      return [...prevCards, ...uniqueCards];
+    });
   };
 
   useEffect(() => {
@@ -40,30 +51,28 @@ export default function Page() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleCardClick = (card: MtGCard) => {
+    setSelectedCard(card);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedCard(null);
+  };
+
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Cards</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {cards.map((card) => (
-          <div key={card.id} className="mtg-card">
-            <div className="mtg-card-body">
-              <div className="mtg-card-image-container">
-                <div className="mtg-card-header">
-                  <h4 className="font-bold text-lg">{card.name}</h4>
-                </div>
-                <img src={card.image_uris.border_crop} alt={card.artist} className="mtg-card-image" />
-                <img src={card.image_uris.large} alt={card.artist} className="mtg-card-full-image" />
-              </div>
-              <div className="mtg-card-footer">
-                <a href={card.scryfall_set_uri} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
-                  Scryfall Set URI
-                </a>
-                <small className="text-gray-500">CMC: {card.cmc}</small>
-              </div>
-            </div>
-          </div>
+          <DisplayCard key={card.id} card={card} onClick={() => handleCardClick(card)} />
         ))}
       </div>
+
+      {selectedCard && (
+        <CardModal isOpen={isModalOpen} onClose={handleCloseModal} card={selectedCard} />
+      )}
     </div>
   );
 }

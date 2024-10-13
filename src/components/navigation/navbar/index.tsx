@@ -1,9 +1,14 @@
+'use client';
+
 import React from "react";
 import Link from "next/link";
 import Logo from "./Logo";
 import AuthButton from "./AuthButton";
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 const Navbar = () => {
+  const { user } = useUser();
+
   return (
     <>
       <div className="w-full h-20 bg-emerald-800 sticky top-0">
@@ -24,10 +29,17 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/profile">
-                  <p>Profile</p>
+                <Link href="/decks">
+                  <p>Decks</p>
                 </Link>
               </li>
+              {user && (
+                <li>
+                  <Link href="/profile">
+                    <p>Profile</p>
+                  </Link>
+                </li>
+              )}
             </ul>
             <AuthButton />
           </div>
