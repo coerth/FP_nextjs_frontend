@@ -14,4 +14,5 @@ export interface MtGCard {
     lang: string;
     color_identity: string[];
     colors: string[];
+    type_line: string;
   }

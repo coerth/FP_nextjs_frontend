@@ -19,11 +19,18 @@ const DisplayCard: React.FC<CardProps> = ({ card, onClick }) => {
           <img src={card.image_uris.art_crop} alt={card.artist} className="mtg-card-image" />
         </div>
         <div className="mtg-card-footer">
-          <p>Cost: {card.cmc}</p>
+        <div className="type-cost">
+            <p className="type-line">{card.type_line}</p>
+            {/* <p className="cost">Cost: {card.cmc}</p> */}
+          </div>
           <div className="mana-symbols">
-            {card.color_identity.map((symbol, index) => (
-              <Image key={index} src={getManaSymbolUrl(symbol)} alt={symbol} className="mana-symbol" width={20} height={20} />
-            ))}
+          {card.color_identity.length > 0 ? (
+              card.color_identity.map((symbol, index) => (
+                <Image key={index} src={getManaSymbolUrl(symbol)} alt={symbol} className="mana-symbol" width={20} height={20} />
+              ))
+            ) : (
+              <Image src={getManaSymbolUrl('')} alt="Neutral" className="mana-symbol" width={20} height={20} />
+            )}
           </div>
         </div>
       </div>

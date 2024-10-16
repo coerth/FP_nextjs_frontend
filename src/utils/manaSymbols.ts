@@ -4,9 +4,22 @@ const manaSymbolsMap: { [key: string]: string } = {
     'B': '/images/manasymbols/Sort-01.png',
     'R': '/images/manasymbols/Rd-01.png',
     'G': '/images/manasymbols/Grn-01.png',
-    // Add other mana symbols as needed
+    '':  '/images/manasymbols/Neutral-01.png',
   };
   
   export const getManaSymbolUrl = (symbol: string): string => {
     return manaSymbolsMap[symbol] || '';
+  };
+
+const manaSymbolsColorCodeMap = {
+    'W': '#f9f8db',
+    'U': '#bcdaec',
+    'B': '#c2b6ae',
+    'R': '#f8a076',
+    'G': '#9cc597',
+    '': 'neutral',
+  };
+  
+  export const getManaSymbolColorCode = (symbol: string): string => {
+    return manaSymbolsColorCodeMap[symbol] || '';
   };

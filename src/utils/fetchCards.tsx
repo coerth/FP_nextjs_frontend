@@ -26,6 +26,7 @@ export async function fetchCards(limit: number, skip: number, lang: string, toke
               mtgo_id
               color_identity
               colors
+              type_line
               lang
             }
           }

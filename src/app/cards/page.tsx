@@ -5,6 +5,7 @@ import { fetchCards } from '../../utils/fetchCards';
 import { MtGCard } from '@/types/mtgCard';
 import DisplayCard from '@/components/DisplayCard';
 import CardModal from '@/components/CardModal';
+import { fetchJWTToken } from '@/utils/fetchJWTToken';
 
 export default function Page() {
   const [cards, setCards] = useState<MtGCard[]>([]);
@@ -16,8 +17,7 @@ export default function Page() {
 
   const loadCards = async (page: number) => {
     const skip = (page - 1) * limit;
-    const response = await fetch('/api/auth/token');
-    const { accessToken } = await response.json();
+    const accessToken = await fetchJWTToken();
     console.log('accessToken', accessToken);
     const newCards: MtGCard[] = await fetchCards(limit, skip, "en", accessToken);
 
