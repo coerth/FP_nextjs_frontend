@@ -7,8 +7,6 @@ export default async function handler(req, res) {
       scopes: ['openid', 'profile', 'email'], // Ensure the correct scopes are requested
     });
 
-    console.log('Access Token:', accessToken);
-
     res.status(200).json({ accessToken });
   } catch (error) {
     console.error('Error getting access token:', error);

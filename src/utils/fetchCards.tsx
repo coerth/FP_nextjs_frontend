@@ -18,11 +18,14 @@ export async function fetchCards(limit: number, skip: number, lang: string, toke
               scryfall_set_uri
               image_uris {
                 border_crop
+                art_crop
               }
               cmc
               name
               set_name
               mtgo_id
+              color_identity
+              colors
               lang
             }
           }
