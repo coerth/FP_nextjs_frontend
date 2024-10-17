@@ -1,6 +1,6 @@
 import { MtGDeck } from '@/types/mtgDeck';
 
-export async function fetchDecksByUser(token: string): Promise<MtGDeck[]> {
+export async function addCardToDeck(deckId: string, cardId: string, count: number, token: string): Promise<MtGDeck> {
   const response = await fetch('http://localhost:4000/graphql', {
     method: 'POST',
     headers: {
@@ -9,9 +9,9 @@ export async function fetchDecksByUser(token: string): Promise<MtGDeck[]> {
     },
     body: JSON.stringify({
       query: `
-        query DecksByUser {
-            decksByUser {
-                cards {
+        mutation AddCardToDeck($deckId: String!, $cardId: String!, $count: Int!) {
+          addCardToDeck(deckId: $deckId, cardId: $cardId, count: $count) {
+            cards {
                 card {
                     id
                         artist
@@ -38,6 +38,7 @@ export async function fetchDecksByUser(token: string): Promise<MtGDeck[]> {
             }
             }
       `,
+      variables: { deckId, cardId, count },
     }),
   });
 
@@ -45,5 +46,6 @@ export async function fetchDecksByUser(token: string): Promise<MtGDeck[]> {
   if (result.errors) {
     throw new Error(result.errors[0].message);
   }
-  return result.data.decksByUser as MtGDeck[];
+
+  return result.data.addCardToDeck as MtGDeck;
 }

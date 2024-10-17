@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import Navigation from "../components/navigation/navbar";
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import "./globals.css";
+import { DecksProvider } from "@/context/DecksContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,7 +33,9 @@ export default function RootLayout({
         >
         <UserProvider>
           <Navigation />
-        {children}
+          <DecksProvider>
+             {children}
+          </DecksProvider>
         </UserProvider>
       </body>
     </html>

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Modal from '@/components/Modal';
 import CreateDeckForm from '@/components/CreateDeckForm';
-import { fetchDecks } from '@/utils/fetchDecksByUser';
+import { fetchDecksByUser } from '@/utils/fetchDecksByUser';
 import { MtGDeck } from '@/types/mtgDeck';
 import { fetchJWTToken } from '@/utils/fetchJWTToken';
 
@@ -20,7 +20,7 @@ const Page: React.FC = () => {
       setError(null);
       try {
         const token = await fetchJWTToken();
-        const fetchedDecks = await fetchDecks(token);
+        const fetchedDecks = await fetchDecksByUser(token);
         setDecks(fetchedDecks);
       } catch (err) {
         setError(err.message);
