@@ -1,0 +1,40 @@
+.gridContainer {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+  }
+  
+  @media (min-width: 640px) {
+    .gridContainer {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .gridContainer {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .gridContainer {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  .deckCard {
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .deckTitle {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .deckLegality {
+    color: #4a5568; /* Tailwind's gray-700 */
+  }

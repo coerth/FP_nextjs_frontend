@@ -35,19 +35,33 @@ body {
   } */
 
   .mtg-card-body {
-    @apply relative overflow-hidden flex flex-col items-center h-full w-full;
+    @apply relative overflow-hidden flex flex-col items-center justify-center h-full w-full;
+    z-index: 20;
   }
 
   .mtg-card-image-container {
     @apply relative w-full h-3/4 border-b border-gray-400;
+    z-index: 20;
   }
 
   .mtg-card-image {
     @apply object-cover w-full h-full;
+    z-index: 20;
+  }
+
+  .mtg-card-alternate-image {
+    @apply absolute top-0 left-0 w-full h-full object-cover rounded-lg z-40;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+  }
+
+  .mtg-card:hover .mtg-card-alternate-image {
+    opacity: 1;
   }
 
   .mtg-card-footer {
     @apply flex flex-col items-center justify-center p-2 h-1/4;
+    z-index: 50;
   }
 
   .mtg-card-footer p {
@@ -88,6 +102,7 @@ body {
     background-color: rgba(255, 255, 255, 0.1); /* Slightly brighter background */
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
+    z-index: 20;
   }
 
   .type-cost {
