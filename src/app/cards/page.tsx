@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { fetchCards } from '../../utils/fetchCards';
 import { MtGCard } from '@/types/mtgCard';
 import DisplayCard from '@/components/DisplayCard';
@@ -12,14 +13,30 @@ export default function Page() {
   const [selectedCard, setSelectedCard] = useState<MtGCard | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [page, setPage] = useState<number>(1);
+  const searchParams = useSearchParams();
 
   const limit = 20;
 
   const loadCards = async (page: number) => {
     const skip = (page - 1) * limit;
     const accessToken = await fetchJWTToken();
-    console.log('accessToken', accessToken);
-    const newCards: MtGCard[] = await fetchCards(limit, skip, "en", accessToken);
+    
+    const params: { [key: string]: any } = {
+      limit,
+      skip,
+      lang: 'en',
+    };
+
+    // Add search parameters to the params object
+    searchParams.forEach((value, key) => {
+      if (key === 'color') {
+        params[key] = value.toUpperCase();
+      } else {
+        params[key] = value;
+      }
+    });
+
+    const newCards: MtGCard[] = await fetchCards(params, accessToken);
 
     // Add page number to each card
     const cardsWithPage = newCards.map(card => ({ ...card, page }));
@@ -34,7 +51,7 @@ export default function Page() {
 
   useEffect(() => {
     loadCards(page);
-  }, [page]);
+  }, [page, searchParams]);
 
   useEffect(() => {
     const handleScroll = () => {
