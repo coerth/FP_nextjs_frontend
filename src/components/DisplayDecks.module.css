@@ -1,7 +1,7 @@
 .gridContainer {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    gap: 1rem;
+    gap: 2rem !important;
   }
   
   @media (min-width: 640px) {
@@ -27,6 +27,7 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 0.5rem;
     padding: 1rem;
+    margin: 2rem;
   }
   
   .deckTitle {

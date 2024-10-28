@@ -1,0 +1,36 @@
+.cardContainer {
+  @apply relative px-2 py-1 border rounded shadow-sm hover:shadow-lg hover:border-blue-500 transition duration-300;
+}
+
+.cardImageContainer {
+  @apply absolute -top-8 left-1/2 transform -translate-x-1/2;
+}
+
+.cardImage {
+  @apply w-full h-full object-cover transition-transform duration-300 hover:scale-150;
+}
+
+.cardName {
+  @apply text-sm font-bold;
+}
+
+.colorIcons {
+  @apply flex justify-center space-x-1 my-1;
+}
+
+.cardCount {
+  @apply text-xs;
+}
+
+/* Modal-Specific Styles */
+.modalCardContainer {
+  @apply bg-white p-4 border rounded-lg shadow-lg max-w-md mx-auto;
+}
+
+.modalCardImage {
+  @apply w-full h-auto object-cover hover:scale-110;
+}
+
+.modalCardFooter {
+  @apply mt-4 text-center;
+}

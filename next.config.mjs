@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    images: {
+        domains: ['cards.scryfall.io'],
+      },
+};
 
 export default nextConfig;

@@ -1,0 +1,44 @@
+.mtgCard {
+    @apply mt-4 p-2 border rounded-md shadow-md transition-all duration-300 cursor-pointer;
+  }
+  
+  .mtgCardBody {
+    @apply flex flex-col items-center;
+  }
+  
+  .mtgCardImageContainer {
+    @apply relative w-full h-64 overflow-hidden;
+  }
+  
+  .mtgCardHeader {
+    @apply text-center font-bold text-lg mt-2;
+  }
+  
+  .mtgCardImage {
+    @apply w-full h-full object-cover transition duration-300 ease-in-out hover:scale-110;
+  }
+  
+  .mtgCardFullImage {
+    @apply w-full h-full object-cover transition duration-300 ease-in-out;
+  }
+  
+  .mtgCardFooter {
+    @apply flex flex-col items-center mt-4;
+  }
+  
+  .typeCost {
+    @apply mb-2 text-sm text-gray-600;
+  }
+  
+  .typeLine {
+    @apply font-semibold;
+  }
+  
+  .manaSymbols {
+    @apply flex justify-center gap-2 mt-1;
+  }
+  
+  .manaSymbol {
+    @apply w-5 h-5;
+  }
+  
