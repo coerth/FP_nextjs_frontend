@@ -6,6 +6,7 @@ import { MtGDeck } from '@/types/mtgDeck';
 import { fetchDeckById } from '@/utils/fetchDeckById';
 import { fetchJWTToken } from '@/utils/fetchJWTToken';
 import DeckCardList from '@/components/deckComponents/DeckCardList';
+import ManaBar from '@/components/deckComponents/ManaBar';
 
 const DeckPage: React.FC = () => {
   const router = useRouter();
@@ -42,6 +43,7 @@ const DeckPage: React.FC = () => {
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">{deck.name}</h1>
       <p>Legality: {deck.legality}</p>
+      <ManaBar manaDistribution={deck.deckStats.totalManaSymbols} />
       <DeckCardList cards={deck.cards} />
     </div>
   );

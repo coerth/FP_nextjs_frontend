@@ -8,27 +8,10 @@ interface DeckCardListProps {
   cards: { card: MtGCard; count: number }[];
 }
 
-const calculateManaDistribution = (cards: { card: MtGCard; count: number }[]) => {
-  const manaDistribution: { [key: string]: number } = {};
-
-  cards.forEach(({ card, count }) => {
-    card.color_identity.forEach((color) => {
-      if (!manaDistribution[color]) {
-        manaDistribution[color] = 0;
-      }
-      manaDistribution[color] += count;
-    });
-  });
-
-  return manaDistribution;
-};
-
 const DeckCardList: React.FC<DeckCardListProps> = ({ cards }) => {
-  const manaDistribution = calculateManaDistribution(cards);
 
   return (
     <div>
-      <ManaBar manaDistribution={manaDistribution} />
       <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
         {cards.map(({ card, count }) => (
           <div key={card.id} className={styles.cardContainer}>

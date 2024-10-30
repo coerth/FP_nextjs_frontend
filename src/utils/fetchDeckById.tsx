@@ -11,34 +11,43 @@ export async function fetchDeckById(deckId: string, token: string): Promise<MtGD
       query: `
         query Deck($deckId: ID!) {
           deck(id: $deckId) {
-            id
-            name
-            legality
             cards {
-              card {
-                id
-                artist
-                arena_id
-                scryfall_set_uri
-                image_uris {
-                  border_crop
-                  art_crop
+                card {
+                    id
+                        artist
+                        arena_id
+                        scryfall_set_uri
+                        image_uris {
+                            border_crop
+                            art_crop
+                        }
+                        cmc
+                        name
+                        set_name
+                        mtgo_id
+                        color_identity
+                        colors
+                        type_line
+                        lang
                 }
-                cmc
+                count
+                }
+                id
+                legality
                 name
-                set_name
-                mtgo_id
-                color_identity
-                colors
-                type_line
-                lang
+              deckStats {
+                totalCards
+                totalUniqueCards
+                totalLands
+                totalCreatures
+                totalPlaneswalkers
+                totalArtifacts
+                totalEnchantments
+                totalInstants
+                totalSorceries
+                totalManaSymbols
               }
-              count
             }
-            id
-            legality
-            name
-          }
         }
       `,
       variables: { deckId },

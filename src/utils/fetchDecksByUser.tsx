@@ -35,6 +35,18 @@ export async function fetchDecksByUser(token: string): Promise<MtGDeck[]> {
                 id
                 legality
                 name
+              deckStats {
+                totalCards
+                totalUniqueCards
+                totalLands
+                totalCreatures
+                totalPlaneswalkers
+                totalArtifacts
+                totalEnchantments
+                totalInstants
+                totalSorceries
+                totalManaSymbols
+              }
             }
             }
       `,

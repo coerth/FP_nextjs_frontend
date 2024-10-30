@@ -8,21 +8,6 @@ interface DisplayDecksProps {
   decks: MtGDeck[];
 }
 
-const calculateManaDistribution = (cards: { card: MtGCard; count: number }[]) => {
-  const manaDistribution: { [key: string]: number } = {};
-
-  cards.forEach(({ card, count }) => {
-    card.color_identity.forEach((color) => {
-      if (!manaDistribution[color]) {
-        manaDistribution[color] = 0;
-      }
-      manaDistribution[color] += count;
-    });
-  });
-
-  return manaDistribution;
-};
-
 const DisplayDecks: React.FC<DisplayDecksProps> = ({ decks }) => {
   const router = useRouter();
 
@@ -33,7 +18,6 @@ const DisplayDecks: React.FC<DisplayDecksProps> = ({ decks }) => {
   return (
     <div className={styles.gridContainer}>
       {decks.map((deck) => {
-        const manaDistribution = calculateManaDistribution(deck.cards);
         return (
           <div
             key={deck.id}
@@ -42,7 +26,9 @@ const DisplayDecks: React.FC<DisplayDecksProps> = ({ decks }) => {
           >
             <h2 className={styles.deckTitle}>{deck.name}</h2>
             <p className={styles.deckLegality}>Legality: {deck.legality}</p>
-            <ManaBar manaDistribution={manaDistribution} />
+            <ManaBar manaDistribution={deck.deckStats.totalManaSymbols} />
+            <p className={styles.cardCount}>Total Cards: {deck.deckStats.totalCards}</p>
+            <p className={styles.cardCount}>Total Unique Cards: {deck.deckStats.totalUniqueCards}</p>
           </div>
         );
       })}
