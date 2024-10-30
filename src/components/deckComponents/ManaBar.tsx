@@ -1,11 +1,13 @@
+// ManaBar.tsx
 import React from 'react';
-import { getManaSymbolUrl, getManaSymbolColorCode } from '@/utils/manaSymbols';
+import { getManaSymbolColorCode, getManaSymbolUrl } from '@/utils/manaSymbols';
 
 interface ManaBarProps {
   manaDistribution: { [key: string]: number };
+  onClick: (symbol: string) => void; // Add this prop
 }
 
-const ManaBar: React.FC<ManaBarProps> = ({ manaDistribution }) => {
+const ManaBar: React.FC<ManaBarProps> = ({ manaDistribution, onClick }) => {
   const totalMana = Object.values(manaDistribution).reduce((acc, count) => acc + count, 0);
 
   return (
@@ -13,12 +15,12 @@ const ManaBar: React.FC<ManaBarProps> = ({ manaDistribution }) => {
       {Object.entries(manaDistribution).map(([color, count]) => (
         <div
           key={color}
-          className="flex items-center justify-center"
+          className="flex items-center justify-center cursor-pointer"
           style={{ width: `${(count / totalMana) * 100}%`, backgroundColor: getManaSymbolColorCode(color) }}
+          onClick={() => onClick(color)} // Call onClick with color
         >
-          <div className="flex items-center justify-center p-1 ">
+          <div className="flex items-center justify-center p-1">
             <img src={getManaSymbolUrl(color)} alt={color} className="w-6 h-6" />
-            {/* <span className="ml-1 text-sm text-white">{count}</span> */}
           </div>
         </div>
       ))}

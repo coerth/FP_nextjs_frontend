@@ -1,0 +1,19 @@
+.container {
+  @apply p-4 rounded shadow-md;
+}
+
+.title {
+  @apply text-xl font-bold mb-4 text-[#ededed]  underline;
+}
+
+.list {
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4;
+}
+
+.listItem {
+  @apply flex justify-between p-2 bg-[#171717] rounded shadow;
+}
+
+.listItemText {
+  @apply text-[#ededed];
+}

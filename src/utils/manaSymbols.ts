@@ -18,7 +18,7 @@ const manaSymbolsColorCodeMap = {
     'B': '#c2b6ae',
     'R': '#f8a076',
     'G': '#9cc597',
-    'C': 'neutral',
+    'C': '#e5e7eb',
   };
   
   export const getManaSymbolColorCode = (symbol: string): string => {
