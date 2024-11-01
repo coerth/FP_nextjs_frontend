@@ -1,8 +1,8 @@
 import React from 'react';
-import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Line } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend } from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend);
 
 interface CMCDistributionHistogramProps {
   cmcValues: number[];
@@ -22,7 +22,9 @@ const CMCDistributionHistogram: React.FC<CMCDistributionHistogramProps> = ({ cmc
         data: Object.values(cmcDistribution),
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
         borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1,
+        borderWidth: 2,
+        fill: false,
+        tension: 0.4, // This adds the curve to the line
       },
     ],
   };
@@ -58,7 +60,7 @@ const CMCDistributionHistogram: React.FC<CMCDistributionHistogramProps> = ({ cmc
 
   return (
     <div className="relative h-64">
-      <Bar data={data} options={options} />
+      <Line data={data} options={options} />
     </div>
   );
 };

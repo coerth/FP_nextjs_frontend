@@ -3,8 +3,8 @@
 
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { MtGDeck } from '@/types/mtgDeck';
-import { fetchDeckById } from '@/utils/fetchDeckById';
+import { MtGDeck, DrawProbabilities } from '@/types/mtgDeck';
+import { FetchDeckAndProbabilities } from '@/utils/Graphql/fetchDeckByIdAndProbabilities';
 import { fetchJWTToken } from '@/utils/fetchJWTToken';
 import DeckCardList from '@/components/deckComponents/DeckCardList';
 import ManaBar from '@/components/deckComponents/ManaBar';
@@ -17,6 +17,7 @@ const DeckPage: React.FC = () => {
   const searchParams = useSearchParams();
   const deckId = params.id;
   const [deck, setDeck] = useState<MtGDeck | null>(null);
+  const [drawProbabilities, setDrawProbabilities] = useState<DrawProbabilities | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showStats, setShowStats] = useState(searchParams.get('showStats') === 'true'); // Initialize from URL
@@ -28,8 +29,9 @@ const DeckPage: React.FC = () => {
       setError(null);
       try {
         const token = await fetchJWTToken();
-        const fetchedDeck = await fetchDeckById(deckId as string, token);
-        setDeck(fetchedDeck);
+        const {deck, drawProbabilities} = await FetchDeckAndProbabilities(deckId as string, token);
+        setDeck(deck);
+        setDrawProbabilities(drawProbabilities);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -72,7 +74,7 @@ const DeckPage: React.FC = () => {
       {!showStats && <ManaBar manaDistribution={deck.deckStats.totalManaSymbols} onClick={handleManaBarClick} />}
       {showStats && (
         <>
-          <DeckStats deckStats={deck.deckStats} onHistogramClick={handleHistogramClick} />
+          <DeckStats deckStats={deck.deckStats} onHistogramClick={handleHistogramClick} drawProbabilities={drawProbabilities} />
           <DeckCMCStats cards={deck.cards} />
         </>
       )}

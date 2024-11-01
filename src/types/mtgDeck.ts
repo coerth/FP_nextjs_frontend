@@ -31,3 +31,23 @@ export interface DeckStats {
   totalManaSymbols: { [key: string]: number };
 }
 
+export interface DrawProbabilities {
+  totalCards: number;
+  totalUniqueCards: number;
+  totalLands: LandDrawProbabilities;
+  totalCreatures: number;
+  totalPlaneswalkers: number;
+  totalArtifacts: number;
+  totalEnchantments: number;
+  totalInstants: number;
+  totalSorceries: number;
+  oneDrops: number;
+  twoDrops: number;
+  threePlusDrops: number;
+}
+
+export interface LandDrawProbabilities {
+  one: number;
+  two: number;
+  three: number;
+}
