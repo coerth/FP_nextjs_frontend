@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MtGCard } from '@/types/mtgCard';
 import { useDecks } from '@/context/DecksContext';
 import styles from './CardModal.module.css';
+import useCardModal from '@/hooks/useCardModal';
 
 interface CardModalProps {
   card: MtGCard;
@@ -11,20 +12,18 @@ interface CardModalProps {
 
 const CardModal: React.FC<CardModalProps> = ({ card, isOpen, onClose }) => {
   const { decks, addCardToDeck } = useDecks();
-  const [selectedDeckId, setSelectedDeckId] = useState<string | null>(null);
-  const [count, setCount] = useState<number>(1);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { state, setSelectedDeckId, setCount, setLoading, setError, reset } = useCardModal();
 
   if (!isOpen) return null;
 
   const handleAddCard = async () => {
-    if (selectedDeckId) {
+    if (state.selectedDeckId) {
       setLoading(true);
       setError(null);
       try {
-        await addCardToDeck(selectedDeckId, card.id, count);
+        await addCardToDeck(state.selectedDeckId, card.id, state.count);
         onClose();
+        reset();
       } catch (err) {
         setError(err.message);
       } finally {
@@ -51,7 +50,7 @@ const CardModal: React.FC<CardModalProps> = ({ card, isOpen, onClose }) => {
             <label htmlFor="deck">Add to Deck:</label>
             <select
               id="deck"
-              value={selectedDeckId || ''}
+              value={state.selectedDeckId || ''}
               onChange={(e) => setSelectedDeckId(e.target.value)}
             >
               <option value="" disabled>Select a deck</option>
@@ -65,14 +64,14 @@ const CardModal: React.FC<CardModalProps> = ({ card, isOpen, onClose }) => {
             <input
               type="number"
               id="count"
-              value={count}
+              value={state.count}
               onChange={(e) => setCount(Number(e.target.value))}
               min="1"
             />
-            <button onClick={handleAddCard} className={styles['card-modal-add-button']} disabled={loading}>
-              {loading ? 'Adding...' : 'Add Card'}
+            <button onClick={handleAddCard} className={styles['card-modal-add-button']} disabled={state.loading}>
+              {state.loading ? 'Adding...' : 'Add Card'}
             </button>
-            {error && <p className="text-red-500">{error}</p>}
+            {state.error && <p className="text-red-500">{state.error}</p>}
           </div>
           <button onClick={onClose} className={styles['card-modal-close-button']}>Close</button>
         </div>

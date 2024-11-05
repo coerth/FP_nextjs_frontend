@@ -7,6 +7,7 @@ import { MtGCard } from '@/types/mtgCard';
 import DisplayCard from '@/components/DisplayCard';
 import CardModal from '@/components/CardModal';
 import { fetchJWTToken } from '@/utils/fetchJWTToken';
+import SearchBar from '@/components/SearchBar';
 
 export default function Page() {
   const [cards, setCards] = useState<MtGCard[]>([]);
@@ -17,26 +18,36 @@ export default function Page() {
 
   const limit = 20;
 
-  const loadCards = async (page: number) => {
+  const loadCards = async (page: number, params?: URLSearchParams) => {
     const skip = (page - 1) * limit;
     const accessToken = await fetchJWTToken();
     
-    const params: { [key: string]: any } = {
+    const queryParams: { [key: string]: any } = {
       limit,
       skip,
       lang: 'en',
     };
 
-    // Add search parameters to the params object
-    searchParams.forEach((value, key) => {
-      if (key === 'color') {
-        params[key] = value.toUpperCase();
-      } else {
-        params[key] = value;
-      }
-    });
+    // Add search parameters to the queryParams object
+    if (params) {
+      params.forEach((value, key) => {
+        if (key === 'color') {
+          queryParams[key] = value.toUpperCase();
+        } else {
+          queryParams[key] = value;
+        }
+      });
+    } else {
+      searchParams.forEach((value, key) => {
+        if (key === 'color') {
+          queryParams[key] = value.toUpperCase();
+        } else {
+          queryParams[key] = value;
+        }
+      });
+    }
 
-    const newCards: MtGCard[] = await fetchCards(params, accessToken);
+    const newCards: MtGCard[] = await fetchCards(queryParams, accessToken);
 
     // Add page number to each card
     const cardsWithPage = newCards.map(card => ({ ...card, page }));
@@ -78,9 +89,16 @@ export default function Page() {
     setSelectedCard(null);
   };
 
+  const handleSearch = (params: URLSearchParams) => {
+    setPage(1); // Reset to the first page
+    setCards([]); // Clear the current cards
+    loadCards(1, params); // Load cards with the new search parameters
+  };
+
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Cards</h1>
+      <SearchBar handleSearch={handleSearch} />
       <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-16">
         {cards.map((card) => (
           <DisplayCard key={card.id} card={card} onClick={() => handleCardClick(card)} />
