@@ -8,6 +8,7 @@ import DisplayCard from '@/components/DisplayCard';
 import CardModal from '@/components/CardModal';
 import { fetchJWTToken } from '@/utils/fetchJWTToken';
 import SearchBar from '@/components/SearchBar';
+import styles from '../../styles/CardList.module.css';
 
 export default function Page() {
   const [cards, setCards] = useState<MtGCard[]>([]);
@@ -96,10 +97,10 @@ export default function Page() {
   };
 
   return (
-    <div className="p-4">
+    <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Cards</h1>
       <SearchBar handleSearch={handleSearch} />
-      <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-16">
+      <div className={styles.gridContainer}>
         {cards.map((card) => (
           <DisplayCard key={card.id} card={card} onClick={() => handleCardClick(card)} />
         ))}

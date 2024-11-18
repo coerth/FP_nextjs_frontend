@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { MtGDeck } from '@/types/mtgDeck';
 import ManaBar from '@/components/deckComponents/ManaBar';
+import { motion } from 'framer-motion';
 import styles from './DisplayDecks.module.css';
 
 interface DisplayDecksProps {
@@ -19,8 +20,10 @@ const DisplayDecks: React.FC<DisplayDecksProps> = ({ decks }) => {
     <div className={styles.gridContainer}>
       {decks.map((deck) => {
         return (
-          <div
+          <motion.div
             key={deck.id}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             className={styles.deckCard}
             onClick={() => handleDeckClick(deck.id)}
           >
@@ -29,7 +32,7 @@ const DisplayDecks: React.FC<DisplayDecksProps> = ({ decks }) => {
             <ManaBar manaDistribution={deck.deckStats.totalManaSymbols} />
             <p className={styles.cardCount}>Total Cards: {deck.deckStats.totalCards}</p>
             <p className={styles.cardCount}>Total Unique Cards: {deck.deckStats.totalUniqueCards}</p>
-          </div>
+          </motion.div>
         );
       })}
     </div>
