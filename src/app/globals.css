@@ -119,7 +119,7 @@ body {
 
   /* Navbar styles */
   .navbar {
-    @apply w-full h-20 bg-emerald-800 sticky top-0 z-50; /* Added z-index */
+    @apply w-full h-20 bg-gray-800 sticky top-0 z-50; /* Added z-index */
   }
 
   .cardContainer {
