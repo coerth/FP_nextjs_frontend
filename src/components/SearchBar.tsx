@@ -6,6 +6,16 @@ type SearchBarProps = {
   handleSearch: (params: URLSearchParams) => void;
 };
 
+const colorMap = {
+  White: 'W',
+  Blue: 'U',
+  Black: 'B',
+  Red: 'R',
+  Green: 'G',
+};
+
+const colors = Object.keys(colorMap);
+
 const SearchBar: React.FC<SearchBarProps> = ({ handleSearch }) => {
   const { state, setColor, setName, setType, setActiveFilters, removeFilter, resetFilters } = useSearchBar();
   const router = useRouter();
@@ -53,7 +63,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSearch }) => {
       return newFilters;
     });
   };
-  
+
+  const handleColorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedColor = e.target.value;
+    const colorValue = colorMap[selectedColor];
+    const newColor = state.color ? `${state.color},${colorValue}` : colorValue;
+    setColor(newColor);
+    handleFilterChange('color', newColor);
+  };
 
   const handleFilterClick = (key: string) => {
     removeFilter(key);
@@ -99,16 +116,18 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSearch }) => {
           </button>
         </div>
         <div className="flex items-center space-x-2">
-          <input
-            type="text"
-            value={state.color}
-            onChange={(e) => {
-              setColor(e.target.value);
-              handleFilterChange('color', e.target.value);
-            }}
-            placeholder="Color"
+          <select
+            value=""
+            onChange={handleColorChange}
             className="p-2 border bg-black border-gray-300 rounded"
-          />
+          >
+            <option value="">Select color</option>
+            {colors.map((color) => (
+              <option key={color} value={color}>
+                {color}
+              </option>
+            ))}
+          </select>
           <input
             type="text"
             value={state.type}

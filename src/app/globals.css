@@ -117,6 +117,14 @@ body {
     @apply text-right;
   }
 
+  input {
+    @apply p-2 border bg-black border-gray-300 rounded;
+  }
+
+  select {
+    @apply p-2 border bg-black border-gray-300 rounded;
+  }
+
   /* Navbar styles */
   .navbar {
     @apply w-full h-20 bg-gray-800 sticky top-0 z-50; /* Added z-index */

@@ -17,7 +17,7 @@ const Navbar = () => {
   };
 
   const linkClasses = (path: string) => {
-    return currentPath === path
+    return currentPath?.startsWith(path)
       ? { borderBottom: `2px solid ${currentSymbolColor}` }
       : {};
   };
