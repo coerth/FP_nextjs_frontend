@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MtGCard } from '@/types/mtgCard';
 import { useDecks } from '@/context/DecksContext';
 import styles from './CardModal.module.css';
 import useCardModal from '@/hooks/useCardModal';
+import { MtGDeck } from '@/types/mtgDeck';
 
 interface CardModalProps {
   card: MtGCard;
@@ -13,11 +14,19 @@ interface CardModalProps {
 const CardModal: React.FC<CardModalProps> = ({ card, isOpen, onClose }) => {
   const { decks, addCardToDeck } = useDecks();
   const { state, setSelectedDeckId, setCount, setLoading, setError, reset } = useCardModal();
+  const [showAlert, setShowAlert] = useState(false);
+  const [ignoreMismatch, setIgnoreMismatch] = useState(false);
 
   if (!isOpen) return null;
 
   const handleAddCard = async () => {
     if (state.selectedDeckId) {
+      const selectedDeck = decks.find(deck => deck.id === state.selectedDeckId);
+      if (selectedDeck && !isCardLegalForDeck(card, selectedDeck) && !ignoreMismatch) {
+        setShowAlert(true);
+        return;
+      }
+
       setLoading(true);
       setError(null);
       try {
@@ -30,6 +39,12 @@ const CardModal: React.FC<CardModalProps> = ({ card, isOpen, onClose }) => {
         setLoading(false);
       }
     }
+  };
+
+  const isCardLegalForDeck = (card: MtGCard, deck: MtGDeck) => {
+    // Check if the card is legal for the deck
+    const deckLegality = deck.legality.toLowerCase();
+    return card.legalities[deckLegality] === 'legal';
   };
 
   return (
@@ -73,6 +88,42 @@ const CardModal: React.FC<CardModalProps> = ({ card, isOpen, onClose }) => {
             </button>
             {state.error && <p className="text-red-500">{state.error}</p>}
           </div>
+          {showAlert && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4" role="alert">
+              <strong className="font-bold">Error:</strong>
+              <span className="block sm:inline"> This card is not legal for the selected deck.</span>
+              <div className="mt-2">
+                <button
+                  onClick={() => {
+                    setIgnoreMismatch(true);
+                    setShowAlert(false);
+                    handleAddCard();
+                  }}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md"
+                >
+                  Ignore and Add
+                </button>
+                <button
+                  onClick={() => setShowAlert(false)}
+                  className="ml-4 px-4 py-2 bg-gray-600 text-white rounded-md"
+                >
+                  Cancel
+                </button>
+              </div>
+              <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
+                <svg
+                  className="fill-current h-6 w-6 text-red-500"
+                  role="button"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  onClick={() => setShowAlert(false)}
+                >
+                  <title>Close</title>
+                  <path d="M14.348 5.652a1 1 0 00-1.414 0L10 8.586 7.066 5.652a1 1 0 10-1.414 1.414L8.586 10l-2.934 2.934a1 1 0 101.414 1.414L10 11.414l2.934 2.934a1 1 0 001.414-1.414L11.414 10l2.934-2.934a1 1 0 000-1.414z" />
+                </svg>
+              </span>
+            </div>
+          )}
           <button onClick={onClose} className={styles['card-modal-close-button']}>Close</button>
         </div>
       </div>

@@ -19,24 +19,45 @@ export async function fetchCards(params: FetchCardsParams, token: string): Promi
     body: JSON.stringify({
       query: `
         query Cards($params: CardSearchParams) {
-          cards(params: $params) {
-            id
-            artist
-            arena_id
-            scryfall_set_uri
-            image_uris {
-              border_crop
-              art_crop
-            }
-            cmc
-            name
-            set_name
-            mtgo_id
-            color_identity
-            colors
-            type_line
-            lang
-          }
+              cards(params: $params) {
+                id
+                artist
+                arena_id
+                scryfall_set_uri
+                image_uris {
+                  border_crop
+                  art_crop
+                }
+                cmc
+                name
+                set_name
+                mtgo_id
+                color_identity
+                colors
+                type_line
+                lang
+        legalities {
+          standard
+          future
+          historic
+          gladiator
+          pioneer
+          explorer
+          modern
+          legacy
+          pauper
+          vintage
+          penny
+          commander
+          brawl
+          historicbrawl
+          alchemy
+          paupercommander
+          duel
+          oldschool
+          premodern
+        }
+      }
         }
       `,
       variables: { params },
