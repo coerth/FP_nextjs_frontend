@@ -17,7 +17,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "MTG Deck Builder",
+  title: "DeckBuild",
   description: "Make your next deck",
 };
 

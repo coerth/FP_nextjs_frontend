@@ -4,12 +4,13 @@
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { MtGDeck, DrawProbabilities } from '@/types/mtgDeck';
-import { FetchDeckAndProbabilities } from '@/utils/Graphql/fetchDeckByIdAndProbabilities';
+import { FetchDeckAndProbabilities } from '@/utils/Graphql/decks/fetchDeckByIdAndProbabilities';
 import { fetchJWTToken } from '@/utils/fetchJWTToken';
 import DeckCardList from '@/components/deckComponents/DeckCardList';
 import ManaBar from '@/components/deckComponents/ManaBar';
 import DeckStats from '@/components/deckComponents/DeckStats';
 import DeckCMCStats from '@/components/deckComponents/DeckCMCStats';
+import DrawCards from '@/components/deckComponents/DrawCards';
 
 const DeckPage: React.FC = () => {
   const params = useParams();
@@ -78,6 +79,7 @@ const DeckPage: React.FC = () => {
           <DeckCMCStats cards={deck.cards} />
         </>
       )}
+      <DrawCards cards={deck.cards.map(card => card.card)} />
       <DeckCardList cards={deck.cards} />
     </div>
   );

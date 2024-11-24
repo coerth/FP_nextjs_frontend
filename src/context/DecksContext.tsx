@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { fetchDecksByUser } from '@/utils/fetchDecksByUser';
+import { fetchDecksByUser } from '@/utils/Graphql/decks/fetchDecksByUser';
 import { fetchJWTToken } from '@/utils/fetchJWTToken';
 import { addCardToDeck as addCardToDeckAPI } from '@/utils/addCardToDeck';
 import { MtGDeck } from '@/types/mtgDeck';
