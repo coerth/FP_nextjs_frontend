@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { MtGDeck } from '@/types/mtgDeck';
 import ManaBar from '@/components/deckComponents/ManaBar';
 import { motion } from 'framer-motion';
-import styles from './DisplayDecks.module.css';
+import styles from '../styles/DisplayDecks.module.css';
 
 interface DisplayDecksProps {
   decks: MtGDeck[];
@@ -29,7 +29,9 @@ const DisplayDecks: React.FC<DisplayDecksProps> = ({ decks }) => {
           >
             <h2 className={styles.deckTitle}>{deck.name}</h2>
             <p className={styles.deckLegality}>Legality: {deck.legality}</p>
-            <ManaBar manaDistribution={deck.deckStats.totalManaSymbols} />
+            {deck.deckStats.totalCards > 0 && (
+              <ManaBar manaDistribution={deck.deckStats.totalManaSymbols} />
+            )}
             <p className={styles.cardCount}>Total Cards: {deck.deckStats.totalCards}</p>
             <p className={styles.cardCount}>Total Unique Cards: {deck.deckStats.totalUniqueCards}</p>
           </motion.div>

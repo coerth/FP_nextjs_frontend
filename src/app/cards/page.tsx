@@ -29,11 +29,16 @@ export default function Page() {
       lang: 'en',
     };
 
-    // Add search parameters to the queryParams object
     if (params) {
       params.forEach((value, key) => {
         if (key === 'color') {
           queryParams[key] = value.toUpperCase();
+        } else if (key.startsWith('legalities.')) {
+          const format = key.split('.')[1];
+          if (!queryParams.legalities) {
+            queryParams.legalities = {};
+          }
+          queryParams.legalities[format] = value;
         } else {
           queryParams[key] = value;
         }
@@ -42,11 +47,19 @@ export default function Page() {
       searchParams.forEach((value, key) => {
         if (key === 'color') {
           queryParams[key] = value.toUpperCase();
+        } else if (key.startsWith('legalities.')) {
+          const format = key.split('.')[1];
+          if (!queryParams.legalities) {
+            queryParams.legalities = {};
+          }
+          queryParams.legalities[format] = value;
         } else {
           queryParams[key] = value;
         }
       });
     }
+
+    console.log('queryParams:', queryParams);
 
     const newCards: MtGCard[] = await fetchCards(queryParams, accessToken);
 
@@ -91,13 +104,13 @@ export default function Page() {
   };
 
   const handleSearch = (params: URLSearchParams) => {
-    setPage(1); // Reset to the first page
-    setCards([]); // Clear the current cards
-    loadCards(1, params); // Load cards with the new search parameters
+    setPage(1); 
+    setCards([]); 
+    loadCards(1, params); 
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container">
       <h1 className="text-2xl font-bold mb-4">Cards</h1>
       <SearchBar handleSearch={handleSearch} />
       <div className={styles.gridContainer}>

@@ -21,7 +21,7 @@ const DeckPage: React.FC = () => {
   const [drawProbabilities, setDrawProbabilities] = useState<DrawProbabilities | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showStats, setShowStats] = useState(searchParams.get('showStats') === 'true'); // Initialize from URL
+  const [showStats, setShowStats] = useState(searchParams.get('showStats') === 'true'); 
 
   useEffect(() => {
     const fetchDeck = async () => {
@@ -69,7 +69,7 @@ const DeckPage: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container">
       <h1 className="text-2xl font-bold mb-4 underline">{deck.name}</h1>
       <p>Legality: {deck.legality}</p>
       {!showStats && <ManaBar manaDistribution={deck.deckStats.totalManaSymbols} onClick={handleManaBarClick} />}
@@ -79,7 +79,7 @@ const DeckPage: React.FC = () => {
           <DeckCMCStats cards={deck.cards} />
         </>
       )}
-      <DrawCards cards={deck.cards.map(card => card.card)} />
+      <DrawCards cards={deck.cards} />
       <DeckCardList cards={deck.cards} />
     </div>
   );

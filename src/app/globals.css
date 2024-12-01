@@ -25,7 +25,41 @@ body {
     text-wrap: balance;
   }
 
-  /* Custom card styles */
+  .container {
+    /* max-width: 1200px; */
+    margin: 0 auto;
+    padding: 16px;
+  }
+  
+  .createButton {
+    margin-top: 16px;
+    padding: 8px 16px;
+    background-color: #1e40af; /* bg-blue-600 */
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .createButton:hover {
+    background-color: #1c3aa9; /* Slightly darker blue */
+  }
+  
+  .sectionTitle {
+    font-size: 1.5rem; /* text-2xl */
+    font-weight: bold;
+    margin-top: 32px; /* mt-8 */
+  }
+  
+  .loadingText {
+    margin-top: 16px; /* mt-4 */
+  }
+  
+  .errorText {
+    color: red;
+    margin-top: 16px; /* mt-4 */
+  }
+
+  Custom card styles
   .mtg-card {
     @apply relative w-80 h-96 border border-gray-400 rounded-lg overflow-hidden transition-transform transform hover:scale-105;
   }

@@ -20,7 +20,7 @@ const Card: React.FC<CardProps> = ({ title, description, href, imageSrc }) => {
         <img
           src={imageSrc}
           alt={title}
-          className="absolute inset-0 w-full h-full object-cover filter grayscale group-hover:filter-none transition-filter duration-300"
+          className="absolute inset-0 w-full h-full object-cover group-hover:filter-none transition-filter duration-300"
         />
         <div className="relative p-6 z-10 bg-black bg-opacity-70">
           <h3 className="text-2xl font-bold mb-4 text-white">{title}</h3>

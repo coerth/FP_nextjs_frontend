@@ -2,16 +2,31 @@ import React, { useState } from 'react';
 import { MtGCard } from '@/types/mtgCard';
 
 interface DrawCardsProps {
-  cards: MtGCard[];
+  cards: { card: MtGCard; count: number }[];
 }
 
 const DrawCards: React.FC<DrawCardsProps> = ({ cards }) => {
   const [drawnCards, setDrawnCards] = useState<MtGCard[]>([]);
   const [numCards, setNumCards] = useState<number>(7);
 
+  // Flatten the list of cards based on their count
+  const flattenedCards = cards.flatMap(({ card, count }) =>
+    Array(count).fill(card)
+  );
+
   const handleDraw = () => {
-    const shuffledCards = [...cards].sort(() => Math.random() - 0.5);
-    setDrawnCards(shuffledCards.slice(0, numCards));
+    // Flatten the list of cards based on their count
+    const deck = cards.flatMap(({ card, count }) => Array(count).fill(card));
+
+    // Fisher-Yates shuffle algorithm
+    for (let i = deck.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [deck[i], deck[j]] = [deck[j], deck[i]];
+    }
+
+    // Draw the specified number of cards
+    const drawn = deck.slice(0, numCards);
+    setDrawnCards(drawn);
   };
 
   return (
@@ -26,7 +41,7 @@ const DrawCards: React.FC<DrawCardsProps> = ({ cards }) => {
           onChange={(e) => setNumCards(Number(e.target.value))}
           className="p-2 border bg-black border-gray-300 rounded"
           min="1"
-          max={cards.length}
+          max={flattenedCards.length}
         />
         <button
           onClick={handleDraw}
@@ -36,8 +51,8 @@ const DrawCards: React.FC<DrawCardsProps> = ({ cards }) => {
         </button>
       </div>
       <div className="flex overflow-x-auto space-x-4">
-        {drawnCards.map((card) => (
-          <div key={card.id} className="border p-2 rounded flex-shrink-0" style={{ width: '150px' }}>
+        {drawnCards.map((card, index) => (
+          <div key={index} className="border p-2 rounded flex-shrink-0" style={{ width: '150px' }}>
             <img src={card.image_uris?.border_crop} alt={card.name} className="w-full h-auto" />
             <p className="mt-2 text-sm">{card.name}</p>
           </div>

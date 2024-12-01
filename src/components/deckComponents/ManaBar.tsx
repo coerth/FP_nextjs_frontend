@@ -4,7 +4,7 @@ import { getManaSymbolColorCode, getManaSymbolUrl } from '@/utils/manaSymbols';
 
 interface ManaBarProps {
   manaDistribution: { [key: string]: number };
-  onClick: (symbol: string) => void; // Add this prop
+  onClick: (symbol: string) => void; 
 }
 
 const ManaBar: React.FC<ManaBarProps> = ({ manaDistribution, onClick }) => {
@@ -17,7 +17,7 @@ const ManaBar: React.FC<ManaBarProps> = ({ manaDistribution, onClick }) => {
           key={color}
           className="flex items-center justify-center cursor-pointer"
           style={{ width: `${(count / totalMana) * 100}%`, backgroundColor: getManaSymbolColorCode(color) }}
-          onClick={() => onClick(color)} // Call onClick with color
+          onClick={() => onClick(color)} 
         >
           <div className="flex items-center justify-center p-1">
             <img src={getManaSymbolUrl(color)} alt={color} className="w-6 h-6" />

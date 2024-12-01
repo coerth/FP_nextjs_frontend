@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import useSearchBar from '@/hooks/useSearchBar';
+import { legalities } from '@/types/legalities'; // Import legalities
 
 type SearchBarProps = {
   handleSearch: (params: URLSearchParams) => void;
@@ -17,7 +18,7 @@ const colorMap = {
 const colors = Object.keys(colorMap);
 
 const SearchBar: React.FC<SearchBarProps> = ({ handleSearch }) => {
-  const { state, setColor, setName, setType, setActiveFilters, removeFilter, resetFilters } = useSearchBar();
+  const { state, setColor, setName, setType, setFormat, setActiveFilters, removeFilter, resetFilters } = useSearchBar();
   const router = useRouter();
 
   const onSubmit = (e: React.FormEvent) => {
@@ -38,6 +39,13 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSearch }) => {
     } else {
       params.delete('type');
     }
+    Object.entries(state.legalities).forEach(([format, value]) => {
+      if (value === 'legal') {
+        params.set(`legalities.${format}`, value);
+      } else {
+        params.delete(`legalities.${format}`);
+      }
+    });
 
     // Add active filters to the URL parameters
     Object.entries(state.activeFilters).forEach(([key, value]) => {
@@ -72,6 +80,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSearch }) => {
     handleFilterChange('color', newColor);
   };
 
+  const handleFormatChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedFormat = e.target.value;
+    setFormat(selectedFormat, 'legal');
+    handleFilterChange(`legalities.${selectedFormat}`, 'legal'); // Update filter key to 'legalities'
+  };
+
   const handleFilterClick = (key: string) => {
     removeFilter(key);
 
@@ -79,6 +93,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSearch }) => {
     if (key === 'color') setColor('');
     if (key === 'name') setName('');
     if (key === 'type') setType('');
+    if (key.startsWith('legalities.')) {
+      const format = key.split('.')[1];
+      setFormat(format, '');
+    }
 
     // Update the search after removing the filter
     const params = new URLSearchParams(window.location.search);
@@ -92,6 +110,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSearch }) => {
     setColor('');
     setName('');
     setType('');
+    Object.keys(state.legalities).forEach((format) => setFormat(format, ''));
     const params = new URLSearchParams();
     router.push(`${window.location.pathname}`);
     handleSearch(params);
@@ -138,6 +157,18 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSearch }) => {
             placeholder="Type"
             className="p-2 border bg-black border-gray-300 rounded"
           />
+          <select
+            value=""
+            onChange={handleFormatChange}
+            className="p-2 border bg-black border-gray-300 rounded"
+          >
+            <option value="">Select format</option>
+            {legalities.map((format) => (
+              <option key={format} value={format}>
+                {format}
+              </option>
+            ))}
+          </select>
         </div>
       </form>
       <div className="flex flex-wrap space-x-2">

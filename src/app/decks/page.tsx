@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Head from 'next/head';
 import Modal from '@/components/Modal';
 import CreateDeckForm from '@/components/CreateDeckForm';
 import DisplayDecks from '@/components/DisplayDecks';
@@ -89,23 +88,23 @@ const Page: React.FC = () => {
 
   return (
     <>
-      <div className="container mx-auto p-4">
+      <div className="container">
         <button
           onClick={handleOpenModal}
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md"
+          className="createButton"
         >
           Create New Deck
         </button>
-        <h2 className="text-2xl font-bold mt-8">Your Decks</h2>
-        {loadingUserDecks && <p>Loading your decks...</p>}
-        {errorUserDecks && <p>Error: {errorUserDecks}</p>}
+        <h2 className="sectionTitle">Your Decks</h2>
+        {loadingUserDecks && <p className="loadingText">Loading your decks...</p>}
+        {errorUserDecks && <p className="errorText">Error: {errorUserDecks}</p>}
         <DisplayDecks decks={userDecks} />
 
-        <h2 className="text-2xl font-bold mt-8">All Decks</h2>
-        {loadingOtherDecks && <p>Loading other decks...</p>}
-        {errorOtherDecks && <p>Error: {errorOtherDecks}</p>}
+        <h2 className="sectionTitle">All Decks</h2>
+        {loadingOtherDecks && <p className="loadingText">Loading other decks...</p>}
+        {errorOtherDecks && <p className="errorText">Error: {errorOtherDecks}</p>}
         <DisplayDecks decks={otherDecks} />
-        {loading && <p>Loading more decks...</p>}
+        {loading && <p className="loadingText">Loading more decks...</p>}
       </div>
       <Modal isOpen={isModalOpen} onClose={handleCloseModal} title="Create New Deck">
         <CreateDeckForm onClose={handleCloseModal} />
