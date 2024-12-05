@@ -4,6 +4,7 @@ import Navigation from "../components/navigation/navbar";
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import "./globals.css";
 import { DecksProvider } from "@/context/DecksContext";
+import Providers from "@/components/root/providers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,10 +33,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
         <UserProvider>
+          <Providers>
           <Navigation />
           <DecksProvider>
              {children}
           </DecksProvider>
+          </Providers>
         </UserProvider>
       </body>
     </html>

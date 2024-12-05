@@ -1,4 +1,6 @@
 import { getSession } from '@auth0/nextjs-auth0';
+import Profile from '@/components/user/Profile';
+
 
 export default async function ProfileServer() {
   const session = await getSession();
@@ -14,14 +16,6 @@ export default async function ProfileServer() {
   const { user } = session;
 
   return (
-      user && (
-          <div>
-            <img src={user.picture} alt={user.name} />
-            <h2>{user.name}</h2>
-            <p>{user.email}</p>
-            <p>User ID: {user.sub}</p> {/* Display the user ID */}
-            <p>Locale: {user.locale}</p>
-          </div>
-      )
+    user && <Profile user={user} />
   );
 }

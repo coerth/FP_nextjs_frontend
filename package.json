@@ -14,6 +14,7 @@
     "@auth0/nextjs-auth0": "^3.5.0",
     "chart.js": "^4.4.6",
     "chartjs-plugin-datalabels": "^2.2.0",
+    "dotenv": "^16.4.7",
     "framer-motion": "^11.11.17",
     "graphql": "^16.9.0",
     "graphql-request": "^7.1.0",
@@ -22,7 +23,8 @@
     "next": "14.2.11",
     "react": "^18",
     "react-chartjs-2": "^5.2.0",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-query": "^3.39.3"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",
