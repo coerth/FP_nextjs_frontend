@@ -1,63 +1,87 @@
 'use client';
-
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { fetchDecksByUser } from '@/utils/Graphql/decks/fetchDecksByUser';
-import { fetchJWTToken } from '@/utils/fetchJWTToken';
-import { addCardToDeck as addCardToDeckAPI } from '@/utils/addCardToDeck';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
+import React, { createContext, useContext, ReactNode } from 'react';
+import { addCardToDeck as addCardToDeckAPI , fetchDecksByUser, createDeck as createDeckAPI, fetchAllDecks as OtherDecksAPI } from '@/app/services/deckService';
 import { MtGDeck } from '@/types/mtgDeck';
-import { MtGCard } from '@/types/mtgCard';
 
 interface DecksContextProps {
-  decks: MtGDeck[];
+  userDecks: MtGDeck[];
+  otherDecks: MtGDeck[];
   loading: boolean;
   error: string | null;
-  refreshDecks: () => void;
+  refreshUserDecks: () => void;
   addCardToDeck: (deckId: string, cardId: string, count: number) => Promise<void>;
+  createDeck: (legality: string, name: string) => Promise<void>;
+  fetchOtherDecks: (page: number, limit: number) => Promise<void>;
 }
 
 const DecksContext = createContext<DecksContextProps | undefined>(undefined);
 
 export const DecksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [decks, setDecks] = useState<MtGDeck[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
-  const fetchUserDecks = async () => {
-    setLoading(true);
-    setError(null);
+  // User decks query
+  const {
+    data: userDecks,
+    isLoading: userDecksLoading,
+    error: userDecksError,
+    refetch: refreshUserDecks,
+  } = useQuery<MtGDeck[], Error>('userDecks', fetchDecksByUser);
+
+  // Other decks query state
+  const [otherDecks, setOtherDecks] = React.useState<MtGDeck[]>([]);
+  const [loadingOtherDecks, setLoadingOtherDecks] = React.useState(false);
+  const [errorOtherDecks, setErrorOtherDecks] = React.useState<string | null>(null);
+
+  const fetchOtherDecks = async (page: number, limit: number) => {
+    console.log(`Fetching other decks for page: ${page}`);
+    setLoadingOtherDecks(true);
     try {
-      const token = await fetchJWTToken();
-      const fetchedDecks = await fetchDecksByUser(token);
-      setDecks(fetchedDecks);
-    } catch (err) {
-      setError(err.message);
+      const fetchedOtherDecks = await OtherDecksAPI({ limit, skip: (page - 1) * limit });
+      console.log('Fetched decks:', fetchedOtherDecks);
+      setOtherDecks((prev) => [
+        ...prev,
+        ...fetchedOtherDecks.filter((deck) => !prev.some((d) => d.id === deck.id)),
+      ]);
+    } catch (error: any) {
+      setErrorOtherDecks(error.message);
     } finally {
-      setLoading(false);
+      setLoadingOtherDecks(false);
     }
   };
+
+  // Mutations
+  const addCardMutation = useMutation(addCardToDeckAPI, {
+    onSuccess: () => queryClient.invalidateQueries('userDecks'),
+  });
+
+  const createDeckMutation = useMutation(createDeckAPI, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('userDecks');
+    },
+  });
 
   const addCardToDeck = async (deckId: string, cardId: string, count: number) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const token = await fetchJWTToken();
-      const updatedDeck = await addCardToDeckAPI(deckId, cardId, count, token);
-      setDecks((prevDecks) =>
-        prevDecks.map((deck) => (deck.id === updatedDeck.id ? updatedDeck : deck))
-      );
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    await addCardMutation.mutateAsync({ deckId, cardId, count });
   };
 
-  useEffect(() => {
-    fetchUserDecks();
-  }, []);
+  const createDeck = async (legality: string, name: string) => {
+    await createDeckMutation.mutateAsync({ legality, name });
+  };
 
   return (
-    <DecksContext.Provider value={{ decks, loading, error, refreshDecks: fetchUserDecks, addCardToDeck }}>
+    <DecksContext.Provider
+      value={{
+        userDecks: userDecks || [],
+        otherDecks,
+        loading: userDecksLoading || loadingOtherDecks,
+        error: userDecksError?.message || errorOtherDecks,
+        refreshUserDecks,
+        fetchOtherDecks,
+        addCardToDeck,
+        createDeck,
+      }}
+    >
       {children}
     </DecksContext.Provider>
   );

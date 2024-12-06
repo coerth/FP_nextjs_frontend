@@ -19,10 +19,9 @@ const ProfileClient: React.FC<ProfileClientProps> = ({ user }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSave = async (name: string, nickname: string) => {
-    // Update the user's profile with the new name and nickname
-    // You can make an API call here to update the user's profile in your backend
+
     console.log('Saving profile:', { name, nickname });
-    setIsModalOpen(false); // Close the modal after saving
+    setIsModalOpen(false); 
   };
 
   const handleOpenModal = () => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createDeck } from '@/utils/createDeck';
+import { useDecks } from '@/context/DecksContext';
 import { legalities } from '@/types/legalities';
 
 interface CreateDeckFormProps {
@@ -13,6 +13,8 @@ const CreateDeckForm: React.FC<CreateDeckFormProps> = ({ onClose }) => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
+  const { createDeck } = useDecks();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -20,10 +22,8 @@ const CreateDeckForm: React.FC<CreateDeckFormProps> = ({ onClose }) => {
     setSuccess(null);
 
     try {
-      const response = await fetch('/api/auth/token');
-      const { accessToken } = await response.json();
-      const deck = await createDeck(legality, name, accessToken);
-      setSuccess(`Deck created: ${deck.name}`);
+      await createDeck(legality, name);
+      setSuccess(`Deck created successfully!`);
       onClose();
     } catch (err) {
       setError(err.message);

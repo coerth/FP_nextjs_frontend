@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { fetchCards } from '../../utils/fetchCards';
+import { fetchCards } from '../services/cardService';
 import { MtGCard } from '@/types/mtgCard';
 import DisplayCard from '@/components/DisplayCard';
 import CardModal from '@/components/CardModal';
@@ -20,9 +20,7 @@ export default function Page() {
   const limit = 20;
 
   const loadCards = async (page: number, params?: URLSearchParams) => {
-    const skip = (page - 1) * limit;
-    const accessToken = await fetchJWTToken();
-    
+    const skip = (page - 1) * limit;    
     const queryParams: { [key: string]: any } = {
       limit,
       skip,
@@ -61,7 +59,7 @@ export default function Page() {
 
     console.log('queryParams:', queryParams);
 
-    const newCards: MtGCard[] = await fetchCards(queryParams, accessToken);
+    const newCards: MtGCard[] = await fetchCards(queryParams);
 
     // Add page number to each card
     const cardsWithPage = newCards.map(card => ({ ...card, page }));

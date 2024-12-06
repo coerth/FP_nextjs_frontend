@@ -4,7 +4,7 @@
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { MtGDeck, DrawProbabilities } from '@/types/mtgDeck';
-import { FetchDeckAndProbabilities } from '@/utils/Graphql/decks/fetchDeckByIdAndProbabilities';
+import { fetchDeckByIdAndProbabilities } from '@/app/services/deckService';
 import { fetchJWTToken } from '@/utils/fetchJWTToken';
 import DeckCardList from '@/components/deckComponents/DeckCardList';
 import ManaBar from '@/components/deckComponents/ManaBar';
@@ -16,7 +16,7 @@ const DeckPage: React.FC = () => {
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const deckId = params.id;
+  const deckId = Array.isArray(params.id) ? params.id[0] : params.id;
   const [deck, setDeck] = useState<MtGDeck | null>(null);
   const [drawProbabilities, setDrawProbabilities] = useState<DrawProbabilities | null>(null);
   const [loading, setLoading] = useState(false);
@@ -29,8 +29,7 @@ const DeckPage: React.FC = () => {
       setLoading(true);
       setError(null);
       try {
-        const token = await fetchJWTToken();
-        const {deck, drawProbabilities} = await FetchDeckAndProbabilities(deckId as string, token);
+        const {deck, drawProbabilities} = await fetchDeckByIdAndProbabilities({deckId, drawCount: 7});
         setDeck(deck);
         setDrawProbabilities(drawProbabilities);
       } catch (err) {

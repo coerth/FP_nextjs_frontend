@@ -12,7 +12,7 @@ interface CardModalProps {
 }
 
 const CardModal: React.FC<CardModalProps> = ({ card, isOpen, onClose }) => {
-  const { decks, addCardToDeck } = useDecks();
+  const { userDecks: decks, addCardToDeck } = useDecks();
   const { state, setSelectedDeckId, setCount, setLoading, setError, reset } = useCardModal();
   const [showAlert, setShowAlert] = useState(false);
   const [ignoreMismatch, setIgnoreMismatch] = useState(false);
