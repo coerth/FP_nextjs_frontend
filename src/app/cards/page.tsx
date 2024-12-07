@@ -2,11 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { fetchCards } from '../services/cardService';
+import { fetchCards } from '../../services/cardService';
 import { MtGCard } from '@/types/mtgCard';
 import DisplayCard from '@/components/DisplayCard';
 import CardModal from '@/components/CardModal';
-import { fetchJWTToken } from '@/utils/fetchJWTToken';
 import SearchBar from '@/components/SearchBar';
 import styles from '../../styles/CardList.module.css';
 
@@ -57,14 +56,10 @@ export default function Page() {
       });
     }
 
-    console.log('queryParams:', queryParams);
-
     const newCards: MtGCard[] = await fetchCards(queryParams);
-
-    // Add page number to each card
+    
     const cardsWithPage = newCards.map(card => ({ ...card, page }));
 
-    // Avoid duplicates by checking if the card already exists in the state
     setCards((prevCards) => {
       const cardIds = new Set(prevCards.map(card => card.id));
       const uniqueCards = cardsWithPage.filter(card => !cardIds.has(card.id));

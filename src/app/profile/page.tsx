@@ -1,21 +1,26 @@
-import { getSession } from '@auth0/nextjs-auth0';
+"use client";
+
+import React from 'react';
+import { useUser } from '@/context/UserContext';
 import Profile from '@/components/user/Profile';
 
+export default function ProfileServer() {
+  const { user, loading, error } = useUser();
 
-export default async function ProfileServer() {
-  const session = await getSession();
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
-  if (!session || !session.user) {
-    // Redirect to login page if not authenticated
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
+  if (!user) {
     if (typeof window !== 'undefined') {
       window.location.href = '/api/auth/login';
     }
     return null;
   }
 
-  const { user } = session;
-
-  return (
-    user && <Profile user={user} />
-  );
+  return <Profile user={user} />;
 }

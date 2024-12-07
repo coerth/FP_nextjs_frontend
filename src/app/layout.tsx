@@ -6,6 +6,7 @@ import "./globals.css";
 import { DecksProvider } from "@/context/DecksContext";
 import Providers from "@/components/root/providers";
 
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",

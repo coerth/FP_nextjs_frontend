@@ -4,8 +4,7 @@
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { MtGDeck, DrawProbabilities } from '@/types/mtgDeck';
-import { fetchDeckByIdAndProbabilities } from '@/app/services/deckService';
-import { fetchJWTToken } from '@/utils/fetchJWTToken';
+import { fetchDeckByIdAndProbabilities } from '@/services/deckService';
 import DeckCardList from '@/components/deckComponents/DeckCardList';
 import ManaBar from '@/components/deckComponents/ManaBar';
 import DeckStats from '@/components/deckComponents/DeckStats';

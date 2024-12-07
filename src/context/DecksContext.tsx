@@ -1,7 +1,7 @@
 'use client';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import React, { createContext, useContext, ReactNode } from 'react';
-import { addCardToDeck as addCardToDeckAPI , fetchDecksByUser, createDeck as createDeckAPI, fetchAllDecks as OtherDecksAPI } from '@/app/services/deckService';
+import { addCardToDeck as addCardToDeckAPI , fetchDecksByUser, createDeck as createDeckAPI, fetchAllDecks as OtherDecksAPI } from '@/services/deckService';
 import { MtGDeck } from '@/types/mtgDeck';
 
 interface DecksContextProps {
@@ -20,7 +20,7 @@ const DecksContext = createContext<DecksContextProps | undefined>(undefined);
 export const DecksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const queryClient = useQueryClient();
 
-  // User decks query
+ 
   const {
     data: userDecks,
     isLoading: userDecksLoading,
@@ -28,17 +28,15 @@ export const DecksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     refetch: refreshUserDecks,
   } = useQuery<MtGDeck[], Error>('userDecks', fetchDecksByUser);
 
-  // Other decks query state
+  
   const [otherDecks, setOtherDecks] = React.useState<MtGDeck[]>([]);
   const [loadingOtherDecks, setLoadingOtherDecks] = React.useState(false);
   const [errorOtherDecks, setErrorOtherDecks] = React.useState<string | null>(null);
 
   const fetchOtherDecks = async (page: number, limit: number) => {
-    console.log(`Fetching other decks for page: ${page}`);
     setLoadingOtherDecks(true);
     try {
       const fetchedOtherDecks = await OtherDecksAPI({ limit, skip: (page - 1) * limit });
-      console.log('Fetched decks:', fetchedOtherDecks);
       setOtherDecks((prev) => [
         ...prev,
         ...fetchedOtherDecks.filter((deck) => !prev.some((d) => d.id === deck.id)),
