@@ -22,6 +22,7 @@ const FETCH_CARDS_QUERY = `
       colors
       type_line
       lang
+      set_id
       legalities {
         standard
         future

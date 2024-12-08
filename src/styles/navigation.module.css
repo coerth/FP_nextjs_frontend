@@ -1,0 +1,19 @@
+.navbar {
+    @apply bg-gray-900 text-white fixed w-full transition-transform duration-300 sticky top-0 z-50;
+  }
+  
+  .container {
+    @apply mx-auto px-4 h-full;
+  }
+  
+  .navbarContent {
+    @apply flex justify-between items-center h-full;
+  }
+  
+  .logoContainer {
+    @apply flex items-center h-full;
+  }
+  
+  .navLinks {
+    @apply hidden md:flex gap-x-6;
+  }

@@ -6,4 +6,5 @@ export interface FetchCardsParams {
     name?: string;
     type?: string;
     legalities?: { [key: string]: string };
+    setId?: string;
   }

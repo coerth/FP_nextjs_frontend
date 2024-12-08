@@ -2,25 +2,28 @@ interface SearchBarState {
   color: string;
   name: string;
   type: string;
-  legalities: { [key: string]: string }; // Update legalities to be an object
+  legalities: { [key: string]: string }; 
   activeFilters: { [key: string]: string };
+  setId: string;
 }
 
 type SearchBarAction =
   | { type: 'SET_COLOR'; payload: string }
   | { type: 'SET_NAME'; payload: string }
   | { type: 'SET_TYPE'; payload: string }
-  | { type: 'SET_FORMAT'; payload: { format: string, value: string } } // Update action for setting format
+  | { type: 'SET_FORMAT'; payload: { format: string, value: string } } 
   | { type: 'SET_ACTIVE_FILTERS'; payload: { [key: string]: string } }
   | { type: 'REMOVE_FILTER'; payload: string }
-  | { type: 'RESET_FILTERS' };
+  | { type: 'RESET_FILTERS' }
+  | { type: 'SET_SET_ID'; payload: string };
 
 const initialState: SearchBarState = {
   color: '',
   name: '',
   type: '',
-  legalities: {}, // Initialize legalities as an object
+  legalities: {}, 
   activeFilters: {},
+  setId: '',
 };
 
 const searchBarReducer = (state: SearchBarState, action: SearchBarAction): SearchBarState => {
@@ -31,7 +34,7 @@ const searchBarReducer = (state: SearchBarState, action: SearchBarAction): Searc
       return { ...state, name: action.payload };
     case 'SET_TYPE':
       return { ...state, type: action.payload };
-    case 'SET_FORMAT': // Handle setting format
+    case 'SET_FORMAT': 
       return { ...state, legalities: { ...state.legalities, [action.payload.format]: action.payload.value } };
     case 'SET_ACTIVE_FILTERS':
       return { ...state, activeFilters: action.payload };
@@ -41,6 +44,8 @@ const searchBarReducer = (state: SearchBarState, action: SearchBarAction): Searc
       return { ...state, activeFilters: newFilters };
     case 'RESET_FILTERS':
       return initialState;
+    case 'SET_SET_ID': // Handle setting setId
+      return { ...state, setId: action.payload };
     default:
       return state;
   }

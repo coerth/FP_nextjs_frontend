@@ -13,6 +13,7 @@ const useSearchBar = () => {
   };
   const removeFilter = (key: string) => dispatch({ type: 'REMOVE_FILTER', payload: key });
   const resetFilters = () => dispatch({ type: 'RESET_FILTERS' });
+  const setSetId = (setId: string) => dispatch({ type: 'SET_SET_ID', payload: setId });
 
   return {
     state,
@@ -23,6 +24,7 @@ const useSearchBar = () => {
     setActiveFilters,
     removeFilter,
     resetFilters,
+    setSetId,
   };
 };
 

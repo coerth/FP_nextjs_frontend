@@ -36,4 +36,5 @@ export interface MtGCard {
     color_identity: string[];
     colors: string[];
     type_line: string;
+    set_id: string;
   }

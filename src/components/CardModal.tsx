@@ -61,8 +61,8 @@ const CardModal: React.FC<CardModalProps> = ({ card, isOpen, onClose }) => {
           <p><strong>Artist:</strong> {card.artist}</p>
           <p><strong>CMC:</strong> {card.cmc}</p>
           <p><strong>Set:</strong> {card.set_name}</p>
-          <a href={card.scryfall_set_uri} target="_blank" rel="noreferrer" className={styles['card-modal-link']}>
-            Scryfall Set URI
+          <a href={`/sets/${card.set_id}`} target="_blank" rel="noreferrer" className={styles['card-modal-link']}>
+            Set URI
           </a>
 
           <div className={styles['card-modal-deck-selector']}>

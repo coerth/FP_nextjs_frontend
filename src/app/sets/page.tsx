@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchSets } from '@/services/setService';
 import { MtgSet } from '@/types/mtgSet';
+import DisplaySets from '@/components/DisplaySets';
 
 const SetsPage: React.FC = () => {
   const [sets, setSets] = useState<MtgSet[]>([]);
@@ -12,7 +13,7 @@ const SetsPage: React.FC = () => {
   useEffect(() => {
     const loadSets = async () => {
       try {
-        const fetchedSets = await fetchSets({ limit: 30 });
+        const fetchedSets = await fetchSets({ limit: 30, skip: 0 });
         setSets(fetchedSets);
       } catch (err) {
         setError('Failed to fetch sets');
@@ -35,25 +36,7 @@ const SetsPage: React.FC = () => {
   return (
     <div>
       <h1>Sets</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Set URI</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sets.map((set) => (
-            <tr key={set.set_id}>
-              <td>{set.set_id}</td>
-              <td>{set.set_name}</td>
-              <td>{set.set_uri}</td>
-              <td>{set.icon_svg_uri}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <DisplaySets sets={sets} />
     </div>
   );
 };

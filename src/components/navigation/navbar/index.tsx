@@ -6,6 +6,7 @@ import Logo from "./Logo";
 import AuthButton from "./AuthButton";
 import { useUser } from '@auth0/nextjs-auth0/client';
 import { usePathname } from 'next/navigation';
+import styles from '@/styles/navigation.module.css';
 
 const Navbar = () => {
   const { user } = useUser();
@@ -46,13 +47,13 @@ const Navbar = () => {
   }, [lastScrollY]);
 
   return (
-    <div className={`navbar bg-gray-800 text-white fixed w-full transition-transform duration-300 ${showNavbar ? 'translate-y-0' : '-translate-y-full'}`}>
-      <div className="container mx-auto px-4 h-full">
-        <div className="flex justify-between items-center h-full">
-          <div className="flex items-center h-full">
+    <div className={`${styles.navbar} ${showNavbar ? 'translate-y-0' : '-translate-y-full'}`}>
+      <div className={styles.container}>
+        <div className={styles.navbarContent}>
+          <div className={styles.logoContainer}>
             <Logo onSymbolChange={handleSymbolChange} />
           </div>
-          <ul className="hidden md:flex gap-x-6">
+          <ul className={styles.navLinks}>
             <li>
               <Link href="/cards">
                 <p style={linkClasses('/cards')}>Cards</p>

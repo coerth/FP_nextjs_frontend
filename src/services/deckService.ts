@@ -47,6 +47,7 @@ const ADD_CARD_TO_DECK_MUTATION = `
 const FETCH_DECKS_BY_USER_QUERY = `
         query DecksByUser {
             decksByUser {
+                userId
                 id
                 legality
                 name
@@ -69,6 +70,7 @@ const FETCH_DECKS_BY_USER_QUERY = `
 const FETCH_ALL_DECKS_QUERY = `
         query Decks($limit: Int, $skip: Int) {
           decks(limit: $limit, skip: $skip) {
+            userId
             deckStats {
               totalCards
               totalUniqueCards
@@ -95,6 +97,7 @@ const FETCH_ALL_DECKS_QUERY = `
 const FETCH_DECK_AND_PROBABILITIES_QUERY = `
         query CombinedQuery($deckId: ID!, $drawCount: Int!) {
             deck: deck(id: $deckId) {
+              userId
                 cards {
                 card {
                     id
@@ -155,6 +158,7 @@ const FETCH_DECK_AND_PROBABILITIES_QUERY = `
 const FETCH_DECK_BY_ID_QUERY = `
         query Deck($deckId: ID!) {
           deck(id: $deckId) {
+            userId
             cards {
                 card {
                     id
