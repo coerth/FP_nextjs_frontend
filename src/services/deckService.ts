@@ -199,6 +199,37 @@ const FETCH_DECK_BY_ID_QUERY = `
         }
       `
 
+const REMOVE_CARD_FROM_DECK_MUTATION = `
+      mutation RemoveCardFromDeck($deckId: ID!, $cardId: String!, $count: Int!) {
+        removeCardFromDeck(deckId: $deckId, cardId: $cardId, count: $count) {
+          cards {
+            card {
+              id
+              artist
+              arena_id
+              scryfall_set_uri
+              image_uris {
+                border_crop
+                art_crop
+              }
+              cmc
+              name
+              set_name
+              mtgo_id
+              color_identity
+              colors
+              type_line
+              lang
+            }
+            count
+          }
+          id
+          legality
+          name
+        }
+      }
+    `;
+
 export async function createDeck({legality, name}: {legality: string, name: string}): Promise<MtGDeck> {
     const accessToken = await fetchJWTToken();
     setAuthToken(accessToken);
@@ -251,3 +282,12 @@ export async function fetchDeckById(deckId: string): Promise<MtGDeck> {
     const data = await graphqlClient.request<{ deck: MtGDeck }>(FETCH_DECK_BY_ID_QUERY, variables);
     return data.deck as MtGDeck;
     }
+
+export async function removeCardFromDeck({ deckId, cardId, count }: { deckId: string; cardId: string; count: number }): Promise<MtGDeck> {
+  const accessToken = await fetchJWTToken();
+  setAuthToken(accessToken);
+
+  const variables = { deckId, cardId, count };
+  const data = await graphqlClient.request<{ removeCardFromDeck: MtGDeck }>(REMOVE_CARD_FROM_DECK_MUTATION, variables);
+  return data.removeCardFromDeck as MtGDeck;
+}

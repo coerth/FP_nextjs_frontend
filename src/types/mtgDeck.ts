@@ -2,7 +2,7 @@ import { MtGCard } from './mtgCard';
 
 export interface MtGDeck {
   id: string;
-  user: User;
+  userId: string;
   name: string;
   legality: string;
   cards: {
@@ -10,12 +10,6 @@ export interface MtGDeck {
     count: number; // Count of the card, with a maximum of 4
   }[];
   deckStats: DeckStats;
-}
-
-export interface User {
-  id: string;
-  username: string;
-  email: string;
 }
 
 export interface DeckStats {

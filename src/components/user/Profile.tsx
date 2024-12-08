@@ -28,6 +28,7 @@ const ProfileClient: React.FC = () => {
       <img src={user.picture} alt={user.name} />
       <h2>{user.name}</h2>
       <h3>{user.nickname}</h3>
+      <h4>{user.id}</h4>
       {/* <p>{user.email}</p>
       <p>User ID: {user.sub}</p>
       <p>Locale: {user.locale}</p> */}

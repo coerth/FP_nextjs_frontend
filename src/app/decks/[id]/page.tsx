@@ -1,23 +1,22 @@
-// DeckPage.tsx
 'use client';
 
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { MtGDeck, DrawProbabilities } from '@/types/mtgDeck';
-import { fetchDeckByIdAndProbabilities } from '@/services/deckService';
 import DeckCardList from '@/components/deckComponents/DeckCardList';
 import ManaBar from '@/components/deckComponents/ManaBar';
 import DeckStats from '@/components/deckComponents/DeckStats';
 import DeckCMCStats from '@/components/deckComponents/DeckCMCStats';
 import DrawCards from '@/components/deckComponents/DrawCards';
+import { useUser } from '@/context/UserContext';
+import { useDecks } from '@/context/DecksContext';
 
 const DeckPage: React.FC = () => {
+  const { user } = useUser();
+  const { addCardToDeck, removeCardFromDeck, setSelectedDeck, selectedDeck, drawProbabilities, updateSelectedDeck } = useDecks();
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
   const deckId = Array.isArray(params.id) ? params.id[0] : params.id;
-  const [deck, setDeck] = useState<MtGDeck | null>(null);
-  const [drawProbabilities, setDrawProbabilities] = useState<DrawProbabilities | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showStats, setShowStats] = useState(searchParams.get('showStats') === 'true'); 
@@ -28,9 +27,7 @@ const DeckPage: React.FC = () => {
       setLoading(true);
       setError(null);
       try {
-        const {deck, drawProbabilities} = await fetchDeckByIdAndProbabilities({deckId, drawCount: 7});
-        setDeck(deck);
-        setDrawProbabilities(drawProbabilities);
+        await setSelectedDeck(deckId);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -42,7 +39,6 @@ const DeckPage: React.FC = () => {
   }, [deckId]);
 
   useEffect(() => {
-    // Update URL when showStats changes
     const queryParams = new URLSearchParams(window.location.search);
     if (showStats) {
       queryParams.set('showStats', 'true');
@@ -54,31 +50,53 @@ const DeckPage: React.FC = () => {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
-  if (!deck) return <p>No deck found</p>;
+  if (!selectedDeck || !selectedDeck.deckStats) return <p>No deck found</p>;
 
-  // Function to handle the click on a color in ManaBar
+
   const handleManaBarClick = () => {
-    setShowStats(true); // Show stats when mana bar is clicked
+    setShowStats(true); 
   };
 
-  // Function to handle clicking on the histogram to hide stats and show ManaBar
   const handleHistogramClick = () => {
-    setShowStats(false); // Hide stats to show the mana bar again
+    setShowStats(false); 
+  };
+
+  const handleIncreaseCardCount = async (cardId: string) => {
+    if (!selectedDeck) return;
+    try {
+      await addCardToDeck(selectedDeck.id, cardId, 1);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleDecreaseCardCount = async (cardId: string) => {
+    if (!selectedDeck) return;
+    try {
+      await removeCardFromDeck(selectedDeck.id, cardId, 1);
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
     <div className="container">
-      <h1 className="text-2xl font-bold mb-4 underline">{deck.name}</h1>
-      <p>Legality: {deck.legality}</p>
-      {!showStats && <ManaBar manaDistribution={deck.deckStats.totalManaSymbols} onClick={handleManaBarClick} />}
+      <h1 className="text-2xl font-bold mb-4 underline">{selectedDeck.name}</h1>
+      <p>Legality: {selectedDeck.legality}</p>
+      {!showStats && <ManaBar manaDistribution={selectedDeck.deckStats.totalManaSymbols} onClick={handleManaBarClick} />}
       {showStats && (
         <>
-          <DeckStats deckStats={deck.deckStats} onHistogramClick={handleHistogramClick} drawProbabilities={drawProbabilities} />
-          <DeckCMCStats cards={deck.cards} />
+          <DeckStats deckStats={selectedDeck.deckStats} onHistogramClick={handleHistogramClick} drawProbabilities={drawProbabilities} />
+          <DeckCMCStats cards={selectedDeck.cards} />
         </>
       )}
-      <DrawCards cards={deck.cards} />
-      <DeckCardList cards={deck.cards} />
+      <DrawCards cards={selectedDeck.cards} />
+      <DeckCardList 
+        cards={selectedDeck.cards} 
+        isOwner={user && user.id === selectedDeck.userId} 
+        onIncreaseCardCount={handleIncreaseCardCount} 
+        onDecreaseCardCount={handleDecreaseCardCount} 
+      />
     </div>
   );
 };
