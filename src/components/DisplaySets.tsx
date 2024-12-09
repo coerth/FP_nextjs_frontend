@@ -26,10 +26,15 @@ const DisplaySets: React.FC<DisplaySetsProps> = ({ sets }) => {
             className={styles.setCard}
             onClick={() => handleSetClick(set.set_id)}
           >
-            <h2 className={styles.setTitle}>{set.set_name}</h2>
-            <p className={styles.setType}>Type: {set.set_type}</p>
-            <p className={styles.releaseDate}>Released: {set.released_at}</p>
-            <p className={styles.cardCount}>Total Cards: {set.card_count}</p>
+            <div className={styles.setContent}>
+              <h2 className={styles.setTitle}>{set.set_name}</h2>
+              <p className={styles.setType}>Type: {set.set_type}</p>
+              <p className={styles.releaseDate}>Released: {set.released_at}</p>
+              <p className={styles.cardCount}>Total Cards: {set.card_count}</p>
+            </div>
+            {set.icon_svg_uri && (
+              <img src={set.icon_svg_uri} alt={`${set.set_name} icon`} className={styles.setIcon} />
+            )}
           </motion.div>
         );
       })}

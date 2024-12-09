@@ -37,4 +37,8 @@ export interface MtGCard {
     colors: string[];
     type_line: string;
     set_id: string;
+    keywords: string[];
+    prices: {
+        eur: string;
+    };
   }

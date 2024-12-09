@@ -11,6 +11,7 @@ const FETCH_SETS_QUERY = `
               set_type
               card_count
               released_at
+              icon_svg_uri
             }
           }
         `

@@ -4,28 +4,33 @@ import React, { useState, useEffect } from 'react';
 import { fetchSets } from '@/services/setService';
 import { MtgSet } from '@/types/mtgSet';
 import DisplaySets from '@/components/DisplaySets';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 
 const SetsPage: React.FC = () => {
   const [sets, setSets] = useState<MtgSet[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState<number>(1);
+  const limit = 30;
+
+  const loadSets = async (page: number) => {
+    try {
+      const fetchedSets = await fetchSets({ limit, skip: (page - 1) * limit });
+      setSets((prevSets) => [...prevSets, ...fetchedSets]);
+    } catch (err) {
+      setError('Failed to fetch sets');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const loadSets = async () => {
-      try {
-        const fetchedSets = await fetchSets({ limit: 30, skip: 0 });
-        setSets(fetchedSets);
-      } catch (err) {
-        setError('Failed to fetch sets');
-      } finally {
-        setLoading(false);
-      }
-    };
+    loadSets(page);
+  }, [page]);
 
-    loadSets();
-  }, []);
+  useInfiniteScroll(loading, () => setPage((prevPage) => prevPage + 1));
 
-  if (loading) {
+  if (loading && sets.length === 0) {
     return <div>Loading...</div>;
   }
 
@@ -36,7 +41,10 @@ const SetsPage: React.FC = () => {
   return (
     <div>
       <h1>Sets</h1>
+      <div className="container">
       <DisplaySets sets={sets} />
+      </div>
+      {loading && <div>Loading more sets...</div>}
     </div>
   );
 };

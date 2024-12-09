@@ -8,6 +8,7 @@ import DisplayCard from '@/components/DisplayCard';
 import CardModal from '@/components/CardModal';
 import SearchBar from '@/components/SearchBar';
 import styles from '../styles/CardList.module.css';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 
 interface CardListProps {
   initialParams?: { [key: string]: any };
@@ -19,11 +20,13 @@ const CardList: React.FC<CardListProps> = ({ initialParams = {}, showSearchBar =
   const [selectedCard, setSelectedCard] = useState<MtGCard | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [page, setPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
 
   const limit = 20;
 
   const loadCards = async (page: number, params?: URLSearchParams) => {
+    setLoading(true);
     const skip = (page - 1) * limit;
     const queryParams: { [key: string]: any } = {
       limit,
@@ -62,35 +65,27 @@ const CardList: React.FC<CardListProps> = ({ initialParams = {}, showSearchBar =
       });
     }
 
-    const newCards: MtGCard[] = await fetchCards(queryParams);
+    try {
+      const newCards: MtGCard[] = await fetchCards(queryParams);
+      const cardsWithPage = newCards.map(card => ({ ...card, page }));
 
-    const cardsWithPage = newCards.map(card => ({ ...card, page }));
-
-    setCards((prevCards) => {
-      const cardIds = new Set(prevCards.map(card => card.id));
-      const uniqueCards = cardsWithPage.filter(card => !cardIds.has(card.id));
-      return [...prevCards, ...uniqueCards];
-    });
+      setCards((prevCards) => {
+        const cardIds = new Set(prevCards.map(card => card.id));
+        const uniqueCards = cardsWithPage.filter(card => !cardIds.has(card.id));
+        return [...prevCards, ...uniqueCards];
+      });
+    } catch (error) {
+      console.error('Failed to fetch cards:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     loadCards(page);
-  }, [page, searchParams]);
+  }, [page]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-      const clientHeight = document.documentElement.clientHeight || window.innerHeight;
-
-      if (scrollTop + clientHeight >= scrollHeight - 5) {
-        setPage((prevPage) => prevPage + 1);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  useInfiniteScroll(loading, () => setPage((prevPage) => prevPage + 1));
 
   const handleCardClick = (card: MtGCard) => {
     setSelectedCard(card);
@@ -120,6 +115,7 @@ const CardList: React.FC<CardListProps> = ({ initialParams = {}, showSearchBar =
       {selectedCard && (
         <CardModal isOpen={isModalOpen} onClose={handleCloseModal} card={selectedCard} />
       )}
+      {loading && <div>Loading more cards...</div>}
     </div>
   );
 };

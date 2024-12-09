@@ -1,22 +1,8 @@
 'use client';
-import Image from "next/image";
-import Link from "next/link";
-import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
-import Modal from '@/components/Modal';
 import Card from '@/components/frontpage/frontpageCard';
 import styles from '../styles/Home.module.css';
 
 export default function Home() {
-  const searchParams = useSearchParams();
-  const show = searchParams.get('show') === 'true';
-  const [isModalOpen, setIsModalOpen] = useState(show);
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    window.history.pushState({}, '', '/');
-  };
-
   return (
     <div className={styles.container}>
       <main className={styles.main}>
@@ -24,7 +10,7 @@ export default function Home() {
           Welcome to MTG Deck Builder
         </h1>
         <p className={styles.description}>
-          Search cards and decks to build your own deck!
+          Search cards and sets to build your own deck!
         </p>
         <div className={styles.grid}>
           <Card
@@ -47,10 +33,6 @@ export default function Home() {
           />
         </div>
       </main>
-
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal} title="Modal Title">
-        <p>This is the modal content.</p>
-      </Modal>
     </div>
   );
 }

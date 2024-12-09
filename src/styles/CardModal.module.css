@@ -203,3 +203,20 @@
 .card-modal-close-button:hover {
   background: #2563eb;
 }
+
+.card-modal-keyword {
+  display: inline-block;
+  margin-right: 8px; 
+  margin-bottom: 8px; 
+  padding: 4px 8px; 
+  background-color: #222121; 
+  border-radius: 4px; 
+}
+
+.card-modal-input {
+  width: 40px; /* Set a smaller width */
+  padding: 2px; /* Adjust padding */
+  margin: 0; /* Ensure no margin */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+

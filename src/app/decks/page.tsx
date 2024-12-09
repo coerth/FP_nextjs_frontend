@@ -5,6 +5,7 @@ import Modal from '@/components/Modal';
 import CreateDeckForm from '@/components/CreateDeckForm';
 import DisplayDecks from '@/components/DisplayDecks';
 import { useDecks } from '@/context/DecksContext';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 
 const Page: React.FC = () => {
   const {
@@ -21,35 +22,15 @@ const Page: React.FC = () => {
 
   const limit = 20;
 
-  // Fetch user decks on load
   useEffect(() => {
     refreshUserDecks();
   }, [refreshUserDecks]);
 
-  // Fetch paginated other decks
   useEffect(() => {
-    console.log('Current page:', page);
     fetchOtherDecks(page, limit);
   }, [refreshUserDecks]);
 
-  // Infinite scrolling
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-      const clientHeight = document.documentElement.clientHeight || window.innerHeight;
-  
-      // Prevent infinite scrolling if content fits within the viewport
-      if (scrollHeight <= clientHeight) return;
-  
-      if (scrollTop + clientHeight >= scrollHeight - 5 && !loading) {
-        setPage((prevPage) => prevPage + 1);
-      }
-    };
-  
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [loading]);
+  useInfiniteScroll(loading, () => setPage((prevPage) => prevPage + 1));
 
   return (
     <>

@@ -60,11 +60,21 @@ const CardModal: React.FC<CardModalProps> = ({ card, isOpen, onClose }) => {
           <h2 className={styles['card-modal-title']}>{card.name}</h2>
           <p><strong>Artist:</strong> {card.artist}</p>
           <p><strong>CMC:</strong> {card.cmc}</p>
-          <p><strong>Set:</strong> {card.set_name}</p>
+          {card.prices.eur && <p><strong>Price:</strong> {card.prices.eur}£</p>}
           <a href={`/sets/${card.set_id}`} target="_blank" rel="noreferrer" className={styles['card-modal-link']}>
-            Set URI
+          <strong>Set:</strong> {card.set_name}
           </a>
 
+          {card.keywords && card.keywords.length > 0 && (
+            <>
+              <p><strong>Keywords:</strong></p>
+              {card.keywords.map((keyword) => (
+                <span key={keyword} className={styles['card-modal-keyword']}>
+                  {keyword}
+                </span>
+              ))}
+            </>
+          )}
           <div className={styles['card-modal-deck-selector']}>
             <div>
               <label htmlFor="deck">Add to Deck:</label>
@@ -130,7 +140,7 @@ const CardModal: React.FC<CardModalProps> = ({ card, isOpen, onClose }) => {
           )}
 
           <div className={styles['card-modal-legalities']}>
-            <h3>Legal Formats:</h3>
+            <h3><strong>Legal Formats:</strong></h3>
             <div className={styles['card-modal-legalities-grid']}>
               {Object.keys(card.legalities).map((format) => (
                 <div

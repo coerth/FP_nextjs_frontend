@@ -1,9 +1,8 @@
 import { GraphQLClient } from 'graphql-request';
-import dotenv from 'dotenv';
 
-dotenv.config();
+const API_URL = process.env.NEXT_PUBLIC_GRAPHQL_URL || ' ';
 
-const API_URL = process.env.GRAPHQL_URL || 'http://localhost:4000/graphql';
+console.log('env', process.env.GRAPHQL_URL);
 
 export const graphqlClient = new GraphQLClient(API_URL);
 

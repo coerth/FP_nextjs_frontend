@@ -44,6 +44,10 @@ const FETCH_CARDS_QUERY = `
         oldschool
         premodern
       }
+        keywords
+      prices {
+        eur
+       }
     }
   }
 `;
@@ -54,5 +58,5 @@ export async function fetchCards(params: FetchCardsParams): Promise<MtGCard[]> {
 
   const variables = { params };
   const data = await graphqlClient.request<{ cards: MtGCard[] }>(FETCH_CARDS_QUERY, variables);
-  return data.cards;
+  return data.cards as MtGCard[];
 }

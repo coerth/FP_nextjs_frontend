@@ -1,6 +1,6 @@
 export async function fetchJWTToken(): Promise<string> {
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || ' ';
       const response = await fetch(`${baseUrl}/api/auth/token`, {
         method: 'GET',
         headers: {
