@@ -6,8 +6,10 @@ import CreateDeckForm from '@/components/CreateDeckForm';
 import DisplayDecks from '@/components/DisplayDecks';
 import { useDecks } from '@/context/DecksContext';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 const Page: React.FC = () => {
+  const { user } = useUser(); // Fetch user session
   const {
     userDecks,
     otherDecks,
@@ -35,14 +37,24 @@ const Page: React.FC = () => {
   return (
     <>
       <div className="container">
-        <button onClick={() => setIsModalOpen(true)} className="createButton">
-          Create New Deck
-        </button>
+        {!user && (
+          <div className="banner">
+            <p>Please log in to create your own decks!</p>
+            <a href="/api/auth/login" className="loginButton">Log In</a>
+          </div>
+        )}
+        {user && (
+        <div>
+          <button onClick={() => setIsModalOpen(true)} className="createButton">
+            Create New Deck
+          </button>
+
         <h2 className="sectionTitle">Your Decks</h2>
         {loading && <p className="loadingText">Loading your decks...</p>}
         {error && <p className="errorText">Error: {error}</p>}
         <DisplayDecks decks={userDecks} />
-
+        </div>
+        )}
         <h2 className="sectionTitle">All Decks</h2>
         {loading && <p className="loadingText">Loading other decks...</p>}
         <DisplayDecks decks={otherDecks} />

@@ -38,6 +38,11 @@ export async function updateUser({name, nickname}: {name: string, nickname: stri
 
 export async function fetchUser(): Promise<{ email: string; name: string; nickname: string; id: string }> {
     const accessToken = await fetchJWTToken();
+
+    if (!accessToken || accessToken === '') {
+      return { email: '', name: '', nickname: '', id: '' };
+    }
+
     setAuthToken(accessToken);
     const data = await graphqlClient.request<{ user: { email: string; name: string; nickname: string; id: string } }>(
     FETCH_USER_QUERY,

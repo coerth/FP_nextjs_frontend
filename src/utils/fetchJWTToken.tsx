@@ -9,13 +9,14 @@ export async function fetchJWTToken(): Promise<string> {
       });
   
       if (!response.ok) {
-        throw new Error('Failed to fetch JWT token');
+        return '';
       }
   
       const { accessToken } = await response.json();
       return accessToken;
     } catch (error) {
-      console.error('Error fetching JWT token:', error);
-      throw error;
+      // console.error('Error fetching JWT token:', error);
+      // throw error;
+      return '';
     }
   }

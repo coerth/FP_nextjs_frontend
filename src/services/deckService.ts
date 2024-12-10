@@ -250,6 +250,11 @@ export async function addCardToDeck({deckId, cardId, count,}: {deckId: string; c
 
 export async function fetchDecksByUser(): Promise<MtGDeck[]> {
     const accessToken = await fetchJWTToken();
+
+    if (!accessToken || accessToken === '') {
+      return [];
+    }
+
     setAuthToken(accessToken);
     
     const data = await graphqlClient.request<{ decksByUser: MtGDeck[] }>(FETCH_DECKS_BY_USER_QUERY);
