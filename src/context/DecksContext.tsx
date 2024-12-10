@@ -1,7 +1,7 @@
 'use client';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import React, { createContext, useContext, ReactNode, useState } from 'react';
-import { addCardToDeck as addCardToDeckAPI, fetchDecksByUser, createDeck as createDeckAPI, fetchAllDecks as OtherDecksAPI, removeCardFromDeck as removeCardFromDeckAPI, fetchDeckByIdAndProbabilities, fetchDeckById } from '@/services/deckService';
+import { addCardToDeck as addCardToDeckAPI, fetchDecksByUser, createDeck as createDeckAPI, fetchAllDecks as OtherDecksAPI, removeCardFromDeck as removeCardFromDeckAPI, fetchDeckByIdAndProbabilities, copyDeck as copyDeckAPI, deleteDeck as deleteDeckAPI, editDeck as editDeckAPI } from '@/services/deckService';
 import { MtGDeck, DrawProbabilities } from '@/types/mtgDeck';
 
 interface DecksContextProps {
@@ -18,6 +18,9 @@ interface DecksContextProps {
   fetchOtherDecks: (page: number, limit: number) => Promise<void>;
   setSelectedDeck: (deckId: string) => Promise<void>;
   updateSelectedDeck: () => Promise<void>;
+  copyDeck: (deckId: string, newName: string) => Promise<MtGDeck>;
+  deleteDeck: (deckId: string) => Promise<void>;
+  editDeck: (deckId: string, name: string, legality: string) => Promise<void>;
 }
 
 const DecksContext = createContext<DecksContextProps | undefined>(undefined);
@@ -68,6 +71,25 @@ export const DecksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     },
   });
 
+  const copyDeckMutation = useMutation(copyDeckAPI, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('userDecks');
+    },
+  });
+
+  const deleteDeckMutation = useMutation(deleteDeckAPI, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('userDecks');
+    },
+  });
+
+  const editDeckMutation = useMutation(editDeckAPI, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('userDecks');
+      updateSelectedDeck();
+    },
+  });
+
   const addCardToDeck = async (deckId: string, cardId: string, count: number) => {
     await addCardMutation.mutateAsync({ deckId, cardId, count });
     await updateSelectedDeck();
@@ -95,6 +117,19 @@ export const DecksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     setDrawProbabilities(drawProbabilities);
   };
 
+  const copyDeck = async (deckId: string, newName: string): Promise<MtGDeck> => {
+    const newDeck = await copyDeckMutation.mutateAsync({ deckId, newName });
+    return newDeck;
+  };
+
+  const deleteDeck = async (deckId: string) => {
+    await deleteDeckMutation.mutateAsync({ deckId });
+  };
+
+  const editDeck = async (deckId: string, name: string, legality: string) => {
+    await editDeckMutation.mutateAsync({ deckId, name, legality });
+  };
+
   return (
     <DecksContext.Provider
       value={{
@@ -111,6 +146,9 @@ export const DecksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         createDeck,
         setSelectedDeck,
         updateSelectedDeck,
+        copyDeck,
+        deleteDeck,
+        editDeck,
       }}
     >
       {children}

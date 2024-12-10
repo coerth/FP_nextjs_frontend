@@ -229,6 +229,30 @@ const REMOVE_CARD_FROM_DECK_MUTATION = `
         }
       }
     `;
+  
+const DELETE_DECK_MUTATION = `
+    mutation DeleteDeck($deckId: ID!) {
+      deleteDeck(deckId: $deckId) {
+        id
+      }
+    }
+  `;
+
+const COPY_DECK_MUTATION = `
+    mutation CopyDeck($deckId: ID!, $newName: String!) {
+      copyDeck(deckId: $deckId) {
+        id
+      }
+    }
+  `;
+
+const EDIT_DECK_MUTATION = `
+  mutation EditDeck($deckId: ID!, $name: String!, $legality: String!) {
+    editDeck(deckId: $deckId, name: $name, legality: $legality) {
+      id
+    }
+  }
+`;
 
 export async function createDeck({legality, name}: {legality: string, name: string}): Promise<MtGDeck> {
     const accessToken = await fetchJWTToken();
@@ -295,4 +319,31 @@ export async function removeCardFromDeck({ deckId, cardId, count }: { deckId: st
   const variables = { deckId, cardId, count };
   const data = await graphqlClient.request<{ removeCardFromDeck: MtGDeck }>(REMOVE_CARD_FROM_DECK_MUTATION, variables);
   return data.removeCardFromDeck as MtGDeck;
+}
+
+export async function deleteDeck({deckId}: {deckId: string}): Promise<MtGDeck> {
+  const accessToken = await fetchJWTToken();
+  setAuthToken(accessToken);
+
+  const variables = { deckId };
+  const data = await graphqlClient.request<{ deleteDeck: MtGDeck }>(DELETE_DECK_MUTATION, variables);
+  return data.deleteDeck as MtGDeck;
+}
+
+export async function copyDeck({deckId, newName}: {deckId:string, newName:string}): Promise<MtGDeck> {
+  const accessToken = await fetchJWTToken();
+  setAuthToken(accessToken);
+
+  const variables = { deckId, newName };
+  const data = await graphqlClient.request<{ copyDeck: MtGDeck }>(COPY_DECK_MUTATION, variables);
+  return data.copyDeck as MtGDeck;
+}
+
+export async function editDeck({ deckId, name, legality }: { deckId: string; name: string; legality: string }): Promise<MtGDeck> {
+  const accessToken = await fetchJWTToken();
+  setAuthToken(accessToken);
+
+  const variables = { deckId, name, legality };
+  const data = await graphqlClient.request<{ editDeck: MtGDeck }>(EDIT_DECK_MUTATION, variables);
+  return data.editDeck as MtGDeck;
 }

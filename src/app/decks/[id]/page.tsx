@@ -7,8 +7,12 @@ import ManaBar from '@/components/deckComponents/ManaBar';
 import DeckStats from '@/components/deckComponents/DeckStats';
 import DeckCMCStats from '@/components/deckComponents/DeckCMCStats';
 import DrawCards from '@/components/deckComponents/DrawCards';
+import EditDeckModal from '@/components/deckComponents/EditDeckModal';
+import DeleteDeckModal from '@/components/deckComponents/DeleteDeckModel';
+import CopyDeckModal from '@/components/deckComponents/CopyDeckModal';
 import { useUser } from '@/context/UserContext';
 import { useDecks } from '@/context/DecksContext';
+import { MtGDeck } from '@/types/mtgDeck';
 
 const DeckPage: React.FC = () => {
   const { user } = useUser();
@@ -20,6 +24,10 @@ const DeckPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showStats, setShowStats] = useState<boolean>(searchParams?.get('showStats') === 'true' || false); 
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isCopyModalOpen, setIsCopyModalOpen] = useState(false);
+
 
   useEffect(() => {
     const fetchDeck = async () => {
@@ -95,10 +103,31 @@ const DeckPage: React.FC = () => {
     }
   };
 
+  const handleEditDeck = (updatedDeck: MtGDeck) => {
+    setSelectedDeck(updatedDeck.id);
+  };
+
+  const handleDeleteDeck = () => {
+    router.push('/decks');
+  };
+
+  const handleCopyDeck = () => {
+    // Handle any additional logic after copying the deck
+  };
+
+  const isOwner = !!user && user.id === selectedDeck.userId;
+
   return (
     <div className="container">
       <h1 className="text-2xl font-bold mb-4 underline">{selectedDeck.name}</h1>
       <p>Legality: {selectedDeck.legality}</p>
+      {isOwner && (
+        <>
+          <button onClick={() => setIsEditModalOpen(true)}>Edit Deck</button>
+          <button onClick={() => setIsDeleteModalOpen(true)}>Delete Deck</button>
+          <button onClick={() => setIsCopyModalOpen(true)}>Copy Deck</button>
+        </>
+      )}
       {!showStats && <ManaBar manaDistribution={selectedDeck.deckStats.totalManaSymbols} onClick={handleManaBarClick} />}
       {showStats && (
         <>
@@ -111,9 +140,27 @@ const DeckPage: React.FC = () => {
       <DrawCards cards={selectedDeck.cards} />
       <DeckCardList 
         cards={selectedDeck.cards} 
-        isOwner={!!(user && user.id === selectedDeck.userId)} 
+        isOwner={isOwner} 
         onIncreaseCardCount={handleIncreaseCardCount} 
         onDecreaseCardCount={handleDecreaseCardCount} 
+      />
+      <EditDeckModal
+        deck={selectedDeck}
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onEdit={handleEditDeck}
+      />
+      <DeleteDeckModal
+      deck={selectedDeck}
+      isOpen={isDeleteModalOpen}
+      onClose={() => setIsDeleteModalOpen(false)}
+      onDelete={handleDeleteDeck}
+      />
+      <CopyDeckModal
+        deck={selectedDeck}
+        isOpen={isCopyModalOpen}
+        onClose={() => setIsCopyModalOpen(false)}
+        onCopy={handleCopyDeck}
       />
     </div>
   );

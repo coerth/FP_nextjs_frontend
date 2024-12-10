@@ -20,15 +20,12 @@ const FETCH_SETS_QUERY = `
             const accessToken = await fetchJWTToken();
             setAuthToken(accessToken);
         
-            const variables = { limit, skip };
-            console.log('Fetching sets with variables:', variables); // Log the request variables
-        
+            const variables = { limit, skip };     
             const data = await graphqlClient.request<{ sets: MtgSet[] }>(FETCH_SETS_QUERY, variables);
-            console.log('Fetched sets data:', data); // Log the response data
         
             return data.sets as MtgSet[];
           } catch (error) {
-            console.error('Error fetching sets:', error); // Log the error
+            console.error('Error fetching sets:', error);
             throw error;
           }
         }
