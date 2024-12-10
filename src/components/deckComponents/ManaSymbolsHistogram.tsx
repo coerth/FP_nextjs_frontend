@@ -37,7 +37,7 @@ const ManaSymbolsHistogram: React.FC<ManaSymbolsHistogramProps> = ({ totalManaSy
       },
       tooltip: {
         callbacks: {
-          label: function (context) {
+          label: function (context: { label: any; raw: any; }) {
             const symbol = context.label;
             const count = context.raw;
             return [`${symbol}: ${count}`];

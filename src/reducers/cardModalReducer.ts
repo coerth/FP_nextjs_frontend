@@ -36,4 +36,5 @@ interface CardModalState {
     }
   };
   
-  export { cardModalReducer, initialState, CardModalState, CardModalAction };
+export { cardModalReducer, initialState };
+export type { CardModalState, CardModalAction };

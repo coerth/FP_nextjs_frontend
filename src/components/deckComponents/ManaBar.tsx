@@ -1,5 +1,6 @@
 // ManaBar.tsx
 import React from 'react';
+import Image from 'next/image';
 import { getManaSymbolColorCode, getManaSymbolUrl } from '@/utils/manaSymbols';
 
 interface ManaBarProps {
@@ -20,7 +21,7 @@ const ManaBar: React.FC<ManaBarProps> = ({ manaDistribution, onClick }) => {
           onClick={() => onClick(color)} 
         >
           <div className="flex items-center justify-center p-1">
-            <img src={getManaSymbolUrl(color)} alt={color} className="w-6 h-6" />
+           <Image src={getManaSymbolUrl(color)} alt={color} width={24} height={24} className="w-6 h-6" />
           </div>
         </div>
       ))}

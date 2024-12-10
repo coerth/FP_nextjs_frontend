@@ -73,7 +73,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSearch }) => {
   };
 
   const handleColorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedColor = e.target.value;
+    const selectedColor = e.target.value as keyof typeof colorMap;
     const colorValue = colorMap[selectedColor];
     const newColor = state.color ? `${state.color},${colorValue}` : colorValue;
     setColor(newColor);

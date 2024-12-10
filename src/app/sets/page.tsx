@@ -40,7 +40,6 @@ const SetsPage: React.FC = () => {
 
   return (
     <div>
-      <h1>Sets</h1>
       <div className="container">
       <DisplaySets sets={sets} />
       </div>

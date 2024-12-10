@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Plugin } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Plugin, ChartOptions } from 'chart.js';
 import { getManaSymbolColorCode, getManaSymbolUrl } from '@/utils/manaSymbols';
 import ChartDataLabels from 'chartjs-plugin-datalabels'; // Import the datalabels plugin
 
@@ -31,7 +31,7 @@ const ManaSymbolsBarChart: React.FC<ManaSymbolsBarChartProps> = ({ totalManaSymb
     ],
   };
 
-  const options = {
+  const options: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -41,20 +41,20 @@ const ManaSymbolsBarChart: React.FC<ManaSymbolsBarChartProps> = ({ totalManaSymb
       },
       tooltip: {
         enabled: false, // Disable default tooltip
-        external: ({ chart, tooltip }) => {
+        external: ({ chart, tooltip }: { chart: ChartJS | null; tooltip: any }) => {
           if (!chart || !tooltip || !tooltip.dataPoints.length) {
             setTooltipData(null);
             setTooltipPosition(null);
             return;
           }
-      
+  
           const { dataPoints } = tooltip;
           const chartArea = chart.chartArea; // Get chartArea safely
-      
+  
           if (dataPoints.length && chartArea) {
             const { label, raw } = dataPoints[0];
             setTooltipData({ symbol: label, count: raw });
-      
+  
             // Update tooltip position to mouse coordinates, ensuring chartArea is defined
             setTooltipPosition({
               x: chartArea.left + (dataPoints[0].x + dataPoints[0].width / 2),
@@ -63,7 +63,6 @@ const ManaSymbolsBarChart: React.FC<ManaSymbolsBarChartProps> = ({ totalManaSymb
           }
         },
       },
-      
       datalabels: {
         color: 'white', // Adjust color for better visibility
         anchor: 'end', // Position the label at the end of the bar
@@ -81,8 +80,11 @@ const ManaSymbolsBarChart: React.FC<ManaSymbolsBarChartProps> = ({ totalManaSymb
       y: {
         ticks: {
           stepSize: 1, // Ensures only whole numbers are displayed
-          callback: function (value) {
-            return Number.isInteger(value) ? value : null; // Filters out decimal values
+          callback: function (tickValue: string | number) {
+            if (typeof tickValue === 'number' && Number.isInteger(tickValue)) {
+              return tickValue;
+            }
+            return null; // Filters out decimal values
           },
         },
       },

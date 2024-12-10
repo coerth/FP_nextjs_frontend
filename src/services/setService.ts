@@ -5,9 +5,8 @@ import { MtgSet } from '@/types/mtgSet';
 const FETCH_SETS_QUERY = `
           query Sets($limit: Int, $skip: Int) {
             sets(limit: $limit, skip: $skip) {
-              set
               set_id
-              set_name
+              name
               set_type
               card_count
               released_at

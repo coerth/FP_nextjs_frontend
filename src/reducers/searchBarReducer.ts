@@ -51,4 +51,5 @@ const searchBarReducer = (state: SearchBarState, action: SearchBarAction): Searc
   }
 };
 
-export { searchBarReducer, initialState, SearchBarState, SearchBarAction };
+export { searchBarReducer, initialState };
+export type { SearchBarState, SearchBarAction };

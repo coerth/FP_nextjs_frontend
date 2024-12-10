@@ -5,6 +5,8 @@ import { useUser } from '@/context/UserContext';
 import EditProfile from '@/components/user/EditProfile';
 import Modal from '@/components/Modal';
 
+
+
 const ProfileClient: React.FC = () => {
   const { user, updateUser } = useUser();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,7 +27,7 @@ const ProfileClient: React.FC = () => {
 
   return (
     <div>
-      <img src={user.picture} alt={user.name} />
+      <h1>Profile</h1>
       <h2>{user.name}</h2>
       <h3>{user.nickname}</h3>
       <button

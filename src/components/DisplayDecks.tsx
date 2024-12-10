@@ -30,7 +30,8 @@ const DisplayDecks: React.FC<DisplayDecksProps> = ({ decks }) => {
             <h2 className={styles.deckTitle}>{deck.name}</h2>
             <p className={styles.deckLegality}>Legality: {deck.legality}</p>
             {deck.deckStats.totalCards > 0 && (
-              <ManaBar manaDistribution={deck.deckStats.totalManaSymbols} />
+              <ManaBar manaDistribution={deck.deckStats.totalManaSymbols} onClick={function (symbol: string): void {
+              } } />
             )}
             <p className={styles.cardCount}>Total Cards: {deck.deckStats.totalCards}</p>
             <p className={styles.cardCount}>Total Unique Cards: {deck.deckStats.totalUniqueCards}</p>

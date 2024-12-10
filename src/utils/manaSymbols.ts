@@ -12,7 +12,7 @@ const manaSymbolsMap: { [key: string]: string } = {
     return manaSymbolsMap[symbol] || '';
   };
 
-const manaSymbolsColorCodeMap = {
+const manaSymbolsColorCodeMap: { [key: string]: string } = {
     'W': '#f9f8db',
     'U': '#bcdaec',
     'B': '#c2b6ae',

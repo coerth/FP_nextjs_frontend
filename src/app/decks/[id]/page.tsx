@@ -16,10 +16,10 @@ const DeckPage: React.FC = () => {
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const deckId = Array.isArray(params.id) ? params.id[0] : params.id;
+  const deckId = params && Array.isArray(params.id) ? params.id[0] : params?.id;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showStats, setShowStats] = useState(searchParams.get('showStats') === 'true'); 
+  const [showStats, setShowStats] = useState<boolean>(searchParams?.get('showStats') === 'true' || false); 
 
   useEffect(() => {
     const fetchDeck = async () => {
@@ -27,9 +27,17 @@ const DeckPage: React.FC = () => {
       setLoading(true);
       setError(null);
       try {
-        await setSelectedDeck(deckId);
+        if (typeof deckId === 'string') {
+          await setSelectedDeck(deckId);
+        } else {
+          throw new Error('Invalid deck ID');
+        }
       } catch (err) {
-        setError(err.message);
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
       } finally {
         setLoading(false);
       }
@@ -66,7 +74,11 @@ const DeckPage: React.FC = () => {
     try {
       await addCardToDeck(selectedDeck.id, cardId, 1);
     } catch (err) {
-      setError(err.message);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
     }
   };
 
@@ -75,7 +87,11 @@ const DeckPage: React.FC = () => {
     try {
       await removeCardFromDeck(selectedDeck.id, cardId, 1);
     } catch (err) {
-      setError(err.message);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
     }
   };
 
@@ -86,14 +102,16 @@ const DeckPage: React.FC = () => {
       {!showStats && <ManaBar manaDistribution={selectedDeck.deckStats.totalManaSymbols} onClick={handleManaBarClick} />}
       {showStats && (
         <>
-          <DeckStats deckStats={selectedDeck.deckStats} onHistogramClick={handleHistogramClick} drawProbabilities={drawProbabilities} />
+          {drawProbabilities && (
+            <DeckStats deckStats={selectedDeck.deckStats} onHistogramClick={handleHistogramClick} drawProbabilities={drawProbabilities} />
+          )}
           <DeckCMCStats cards={selectedDeck.cards} />
         </>
       )}
       <DrawCards cards={selectedDeck.cards} />
       <DeckCardList 
         cards={selectedDeck.cards} 
-        isOwner={user && user.id === selectedDeck.userId} 
+        isOwner={!!(user && user.id === selectedDeck.userId)} 
         onIncreaseCardCount={handleIncreaseCardCount} 
         onDecreaseCardCount={handleDecreaseCardCount} 
       />

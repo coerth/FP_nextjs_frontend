@@ -1,3 +1,5 @@
+import { MtGCard } from './mtgCard';
+
 export interface MtGDeckStats {
     id: string;
     name: string;

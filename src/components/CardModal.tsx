@@ -34,7 +34,11 @@ const CardModal: React.FC<CardModalProps> = ({ card, isOpen, onClose }) => {
         onClose();
         reset();
       } catch (err) {
-        setError(err.message);
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
       } finally {
         setLoading(false);
       }
@@ -43,12 +47,12 @@ const CardModal: React.FC<CardModalProps> = ({ card, isOpen, onClose }) => {
 
   const isCardLegalForDeck = (card: MtGCard, deck: MtGDeck) => {
     const deckLegality = deck.legality.toLowerCase();
-    return card.legalities[deckLegality] === 'legal';
+    return card.legalities[deckLegality as keyof typeof card.legalities] === 'legal';
   };
 
-  const legalFormats = Object.keys(card.legalities).filter(
-    (format) => card.legalities[format] === 'legal'
-  );
+  // const legalFormats = Object.keys(card.legalities).filter(
+  //   (format) => card.legalities[format] === 'legal'
+  // );
 
   return (
     <div className={styles['card-modal-overlay']} onClick={onClose}>
@@ -146,7 +150,7 @@ const CardModal: React.FC<CardModalProps> = ({ card, isOpen, onClose }) => {
                 <div
                   key={format}
                   className={
-                    card.legalities[format] === 'legal'
+                    card.legalities[format as keyof typeof card.legalities] === 'legal'
                       ? styles['card-modal-legal-badge']
                       : styles['card-modal-not-legal-badge']
                   }

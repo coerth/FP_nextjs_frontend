@@ -22,5 +22,5 @@ export default function ProfileServer() {
     return null;
   }
 
-  return <Profile user={user} />;
+  return <Profile />;
 }

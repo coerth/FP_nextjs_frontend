@@ -50,7 +50,7 @@ const CardList: React.FC<CardListProps> = ({ initialParams = {}, showSearchBar =
         }
       });
     } else {
-      searchParams.forEach((value, key) => {
+      searchParams?.forEach((value, key) => {
         if (key === 'color') {
           queryParams[key] = value.toUpperCase();
         } else if (key.startsWith('legalities.')) {
