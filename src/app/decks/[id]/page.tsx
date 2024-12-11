@@ -8,7 +8,7 @@ import DeckStats from '@/components/deckComponents/DeckStats';
 import DeckCMCStats from '@/components/deckComponents/DeckCMCStats';
 import DrawCards from '@/components/deckComponents/DrawCards';
 import EditDeckModal from '@/components/deckComponents/EditDeckModal';
-import DeleteDeckModal from '@/components/deckComponents/DeleteDeckModel';
+import DeleteDeckModal from '@/components/deckComponents/DeleteDeckModal';
 import CopyDeckModal from '@/components/deckComponents/CopyDeckModal';
 import { useUser } from '@/context/UserContext';
 import { useDecks } from '@/context/DecksContext';
@@ -111,23 +111,26 @@ const DeckPage: React.FC = () => {
     router.push('/decks');
   };
 
-  const handleCopyDeck = () => {
-    // Handle any additional logic after copying the deck
-  };
-
   const isOwner = !!user && user.id === selectedDeck.userId;
 
   return (
     <div className="container">
+       <div className="flex justify-between items-center mb-4">
       <h1 className="text-2xl font-bold mb-4 underline">{selectedDeck.name}</h1>
-      <p>Legality: {selectedDeck.legality}</p>
+      <div className="flex space-x-2">
       {isOwner && (
         <>
-          <button onClick={() => setIsEditModalOpen(true)}>Edit Deck</button>
-          <button onClick={() => setIsDeleteModalOpen(true)}>Delete Deck</button>
-          <button onClick={() => setIsCopyModalOpen(true)}>Copy Deck</button>
+          <button className='editButton mr-2' onClick={() => setIsEditModalOpen(true)}>Edit Deck</button>
+          <button className='deleteButton mr-2' onClick={() => setIsDeleteModalOpen(true)}>Delete Deck</button>
         </>
       )}
+      {user.id && (
+        
+      <button className='copyButton mr-2' onClick={() => setIsCopyModalOpen(true)}>Copy Deck</button>
+      )}
+       </div>
+       </div>
+      <p>Legality: {selectedDeck.legality}</p>
       {!showStats && <ManaBar manaDistribution={selectedDeck.deckStats.totalManaSymbols} onClick={handleManaBarClick} />}
       {showStats && (
         <>
@@ -160,7 +163,6 @@ const DeckPage: React.FC = () => {
         deck={selectedDeck}
         isOpen={isCopyModalOpen}
         onClose={() => setIsCopyModalOpen(false)}
-        onCopy={handleCopyDeck}
       />
     </div>
   );

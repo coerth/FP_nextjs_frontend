@@ -147,16 +147,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSearch }) => {
               </option>
             ))}
           </select>
-          <input
-            type="text"
-            value={state.type}
-            onChange={(e) => {
-              setType(e.target.value);
-              handleFilterChange('type', e.target.value);
-            }}
-            placeholder="Type"
-            className="p-2 border bg-black border-gray-300 rounded"
-          />
           <select
             value=""
             onChange={handleFormatChange}
@@ -169,6 +159,16 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSearch }) => {
               </option>
             ))}
           </select>
+          <input
+            type="text"
+            value={state.type}
+            onChange={(e) => {
+              setType(e.target.value);
+              handleFilterChange('type', e.target.value);
+            }}
+            placeholder="Type"
+            className="p-2 border bg-black border-gray-300 rounded"
+          />
         </div>
       </form>
       <div className="flex flex-wrap space-x-2">

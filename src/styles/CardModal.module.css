@@ -214,9 +214,9 @@
 }
 
 .card-modal-input {
-  width: 40px; /* Set a smaller width */
-  padding: 2px; /* Adjust padding */
-  margin: 0; /* Ensure no margin */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  width: 40px;
+  padding: 2px; 
+  margin: 0; 
+  box-sizing: border-box; 
 }
 

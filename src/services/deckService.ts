@@ -240,7 +240,7 @@ const DELETE_DECK_MUTATION = `
 
 const COPY_DECK_MUTATION = `
     mutation CopyDeck($deckId: ID!, $newName: String!) {
-      copyDeck(deckId: $deckId) {
+      copyDeck(deckId: $deckId, newName: $newName) {
         id
       }
     }

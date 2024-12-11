@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDecks } from '@/context/DecksContext';
 import { legalities } from '@/types/legalities';
+import styles from '@/styles/DeckModal.module.css';
 
 interface CreateDeckFormProps {
   onClose: () => void;
@@ -37,9 +38,9 @@ const CreateDeckForm: React.FC<CreateDeckFormProps> = ({ onClose }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4">
+    <form onSubmit={handleSubmit} className={styles.form}>
       <div className="mb-4">
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="name" className={styles.label}>
           Name:
         </label>
         <input
@@ -47,19 +48,19 @@ const CreateDeckForm: React.FC<CreateDeckFormProps> = ({ onClose }) => {
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="mt-1 p-2 border bg-black border-gray-300 rounded w-full"
+          className={styles.input}
           required
         />
       </div>
       <div className="mb-4">
-        <label htmlFor="legality" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="legality" className={styles.label}>
           Legality:
         </label>
         <select
           id="legality"
           value={legality}
           onChange={(e) => setLegality(e.target.value)}
-          className="mt-1 p-2 border bg-black border-gray-300 rounded w-full"
+          className={styles.input}
         >
           {legalities.map((legality) => (
             <option key={legality} value={legality}>
@@ -72,16 +73,16 @@ const CreateDeckForm: React.FC<CreateDeckFormProps> = ({ onClose }) => {
         <button
           type="button"
           onClick={onClose}
-          className="mr-4 px-4 py-2 bg-gray-600 text-white rounded-md"
+          className={`${styles.button} ${styles.cancelButton}`}
         >
           Cancel
         </button>
-        <button type="submit" disabled={loading} className="px-4 py-2 bg-blue-600 text-white rounded-md">
+        <button type="submit" disabled={loading} className={`${styles.button} ${styles.submitButton}`}>
           {loading ? 'Creating...' : 'Create Deck'}
         </button>
       </div>
-      {error && <p className="text-red-500 mt-4">Error: {error}</p>}
-      {success && <p className="text-green-500 mt-4">{success}</p>}
+      {error && <p className={styles.errorText}>Error: {error}</p>}
+      {success && <p className={styles.successText}>{success}</p>}
     </form>
   );
 };

@@ -1,0 +1,47 @@
+.form {
+    @apply p-4 mb-4;
+  }
+  
+  .input {
+    @apply mt-1 p-2 border bg-black border-gray-300 rounded w-full mb-4;
+  }
+  
+  .label {
+    @apply block text-sm font-medium text-gray-400;
+  }
+  
+  .button {
+    @apply px-4 py-2 text-white rounded-md;
+  }
+  
+  .cancelButton {
+    @apply mr-4 bg-gray-600;
+  }
+
+  .cancelButton:hover {
+    @apply bg-red-400;
+  }
+
+  .submitButton {
+    @apply bg-blue-800;
+  }
+
+  .submitButton:hover {
+    @apply bg-blue-600;
+  }
+
+  .deleteButton {
+    @apply bg-red-600;
+  }
+
+    .deleteButton:hover {
+        @apply bg-red-400;
+    }
+  
+  .errorText {
+    @apply text-red-500 mt-4;
+  }
+  
+  .successText {
+    @apply text-green-500 mt-4;
+  }

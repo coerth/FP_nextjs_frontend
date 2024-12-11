@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   app:
+    image: registry.digitalocean.com/fullstack-kea/frontend:latest
     build:
       context: .
       dockerfile: Dockerfile

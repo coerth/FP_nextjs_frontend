@@ -17,3 +17,19 @@
   .navLinks {
     @apply hidden md:flex gap-x-6;
   }
+
+  .cancelButton {
+    @apply mr-4 bg-gray-600;
+  }
+
+  .cancelButton:hover {
+    @apply bg-red-400;
+  }
+
+  .submitButton {
+    @apply bg-blue-800;
+  }
+
+  .submitButton:hover {
+    @apply bg-blue-600;
+  }

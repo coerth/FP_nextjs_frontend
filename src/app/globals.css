@@ -222,4 +222,31 @@ body::before {
   .loginButton:hover {
     background-color: #005bb5;
   }
+
+  .editButton {
+    margin-top: 16px;
+    padding: 8px 16px;
+    background-color: #1e40af; /* bg-blue-600 */
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .deleteButton {
+    background-color: #f44336; /* Red */
+    margin-top: 16px;
+    padding: 8px 16px;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .copyButton {
+    background-color: #4caf50; /* Green */
+    margin-top: 16px;
+    padding: 8px 16px;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+  }
 }

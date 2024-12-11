@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDecks } from '@/context/DecksContext';
 import { MtGDeck } from '@/types/mtgDeck';
 import Modal from '@/components/Modal';
+import styles from '@/styles/DeckModal.module.css';
 
 interface DeleteDeckModalProps {
   deck: MtGDeck;
@@ -36,12 +37,22 @@ const DeleteDeckModal: React.FC<DeleteDeckModalProps> = ({ deck, isOpen, onClose
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Delete Deck">
-      <p>Are you sure you want to delete the deck "{deck.name}"?</p>
-      <button onClick={handleDelete} disabled={loading}>
-        {loading ? 'Deleting...' : 'Delete'}
-      </button>
-      {error && <p>{error}</p>}
-      <button onClick={onClose}>Cancel</button>
+      <div className={styles.form}>
+        <p>Are you sure you want to delete the deck "{deck.name}"?</p>
+        <div className="flex justify-end">
+          <button
+            type="button"
+            onClick={onClose}
+            className={`${styles.button} ${styles.cancelButton}`}
+          >
+            Cancel
+          </button>
+          <button onClick={handleDelete} disabled={loading} className={`${styles.button} ${styles.deleteButton}`}>
+            {loading ? 'Deleting...' : 'Delete'}
+          </button>
+        </div>
+        {error && <p className={styles.errorText}>{error}</p>}
+      </div>
     </Modal>
   );
 };

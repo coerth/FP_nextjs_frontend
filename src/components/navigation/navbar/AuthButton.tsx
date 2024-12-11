@@ -10,7 +10,7 @@ const AuthButton = () => {
     <>
       {user ? (
         <a href="/api/auth/logout">
-          <button className="h-12 rounded-lg bg-red font-bold px-5">Log Out</button>
+          <button className={"h-12 rounded-lg bg-red font-bold px-5"}>Log Out</button>
         </a>
       ) : (
         <Link href="/api/auth/login">
