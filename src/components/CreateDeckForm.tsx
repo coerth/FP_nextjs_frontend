@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDecks } from '@/context/DecksContext';
 import { legalities } from '@/types/legalities';
 import styles from '@/styles/DeckModal.module.css';
+import { cleanCardInputs } from '@/utils/cleanCardInputs'; // Import the utility function
 
 interface CreateDeckFormProps {
   onClose: () => void;
@@ -10,6 +11,7 @@ interface CreateDeckFormProps {
 const CreateDeckForm: React.FC<CreateDeckFormProps> = ({ onClose }) => {
   const [name, setName] = useState('');
   const [legality, setLegality] = useState(legalities[0]);
+  const [cards, setCards] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -23,7 +25,10 @@ const CreateDeckForm: React.FC<CreateDeckFormProps> = ({ onClose }) => {
     setSuccess(null);
 
     try {
-      await createDeck(legality, name);
+      const cardInputs = cleanCardInputs(cards); // Use the utility function to clean the card inputs
+      console.log('Cleaned Card Inputs:', cardInputs); // Log the cleaned card inputs
+
+      const newDeck = await createDeck(name, legality, cardInputs);
       setSuccess(`Deck created successfully!`);
       onClose();
     } catch (err) {
@@ -68,6 +73,19 @@ const CreateDeckForm: React.FC<CreateDeckFormProps> = ({ onClose }) => {
             </option>
           ))}
         </select>
+      </div>
+      <div className="mb-4">
+        <label htmlFor="cards" className={styles.label}>
+          Cards (one per line, format: "quantity card name"):
+        </label>
+        <textarea
+          id="cards"
+          value={cards}
+          onChange={(e) => setCards(e.target.value)}
+          className={styles.input}
+          rows={10}
+          placeholder={`e.g.\n2 Forest\n2 Mountain`}
+        />
       </div>
       <div className="flex justify-end">
         <button

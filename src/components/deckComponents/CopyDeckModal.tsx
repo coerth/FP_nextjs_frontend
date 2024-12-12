@@ -1,32 +1,27 @@
 import React, { useState } from 'react';
-import { useDecks } from '@/context/DecksContext';
 import { MtGDeck } from '@/types/mtgDeck';
 import Modal from '@/components/Modal';
-import {useRouter} from 'next/navigation';
 import styles from '@/styles/DeckModal.module.css';
-
 
 interface CopyDeckModalProps {
   deck: MtGDeck;
   isOpen: boolean;
   onClose: () => void;
+  onCopy: (newName: string) => Promise<void>;
 }
 
-const CopyDeckModal: React.FC<CopyDeckModalProps> = ({ deck, isOpen, onClose }) => {
+const CopyDeckModal: React.FC<CopyDeckModalProps> = ({ deck, isOpen, onClose, onCopy }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [newName, setNewName] = useState(`${deck.name} Copy`);
 
-  const { copyDeck } = useDecks();
-  const router = useRouter();
-
-  const handleCopy = async () => {
+  const handleCopy = async (e: React.FormEvent) => {
+    e.preventDefault();
     setLoading(true);
     setError(null);
     try {
-      const newDeck = await copyDeck(deck.id, newName);
+      await onCopy(newName);
       onClose();
-      router.push(`/decks/${newDeck.id}`);
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);

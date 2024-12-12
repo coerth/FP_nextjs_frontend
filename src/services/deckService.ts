@@ -4,11 +4,11 @@ import { MtGDeck, DrawProbabilities } from '@/types/mtgDeck';
 
 
 const CREATE_DECK_MUTATION = `
-        mutation CreateDeck($legality: String!, $name: String!) {
-          createDeck(legality: $legality, name: $name) {
+        mutation CreateDeck($name: String!, $legality: String!, $cards: [DeckCardInput!]) {
+          createDeck(name: $name, legality: $legality, cards: $cards) {
             id
-            name
             legality
+            name
           }
         }
       `
@@ -254,14 +254,14 @@ const EDIT_DECK_MUTATION = `
   }
 `;
 
-export async function createDeck({legality, name}: {legality: string, name: string}): Promise<MtGDeck> {
-    const accessToken = await fetchJWTToken();
-    setAuthToken(accessToken);
-    
-    const variables = { legality, name };
-    const data = await graphqlClient.request<{ createDeck: MtGDeck }>(CREATE_DECK_MUTATION, variables);
-    return data.createDeck as MtGDeck;
-    }
+export async function createDeck({ legality, name, cards }: { legality: string; name: string; cards?: { name: string; count: number }[] }): Promise<MtGDeck> {
+  const accessToken = await fetchJWTToken();
+  setAuthToken(accessToken);
+
+  const variables = { legality, name, cards };
+  const data = await graphqlClient.request<{ createDeck: MtGDeck }>(CREATE_DECK_MUTATION, variables);
+  return data.createDeck as MtGDeck;
+}
 
 export async function addCardToDeck({deckId, cardId, count,}: {deckId: string; cardId: string; count: number;}): Promise<MtGDeck> {
     const accessToken = await fetchJWTToken();

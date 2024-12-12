@@ -14,7 +14,7 @@ interface DecksContextProps {
   refreshUserDecks: () => void;
   addCardToDeck: (deckId: string, cardId: string, count: number) => Promise<void>;
   removeCardFromDeck: (deckId: string, cardId: string, count: number) => Promise<void>;
-  createDeck: (legality: string, name: string) => Promise<void>;
+  createDeck: (name: string, legality: string,  cards?: { name: string; count: number }[]) => Promise<void>;
   fetchOtherDecks: (page: number, limit: number) => Promise<void>;
   setSelectedDeck: (deckId: string) => Promise<void>;
   updateSelectedDeck: () => Promise<void>;
@@ -100,12 +100,12 @@ export const DecksProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     await updateSelectedDeck();
   };
 
-  const createDeck = async (legality: string, name: string) => {
-    await createDeckMutation.mutateAsync({ legality, name });
+  const createDeck = async (name: string, legality: string,  cards?: { name: string; count: number }[]) => {
+    await createDeckMutation.mutateAsync({ name, legality, cards });
   };
 
   const setSelectedDeck = async (deckId: string) => {
-    const {deck, drawProbabilities} = await fetchDeckByIdAndProbabilities({ deckId: deckId, drawCount: 7 });
+    const { deck, drawProbabilities } = await fetchDeckByIdAndProbabilities({ deckId: deckId, drawCount: 7 });
     setSelectedDeckState(deck);
     setDrawProbabilities(drawProbabilities);
   };

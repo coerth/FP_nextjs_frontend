@@ -16,7 +16,7 @@ import { MtGDeck } from '@/types/mtgDeck';
 
 const DeckPage: React.FC = () => {
   const { user } = useUser();
-  const { addCardToDeck, removeCardFromDeck, setSelectedDeck, selectedDeck, drawProbabilities, updateSelectedDeck } = useDecks();
+  const { addCardToDeck, removeCardFromDeck, setSelectedDeck, selectedDeck, drawProbabilities, copyDeck } = useDecks();
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -111,6 +111,19 @@ const DeckPage: React.FC = () => {
     router.push('/decks');
   };
 
+  const handleCopyDeck = async (newName: string) => {
+    try {
+      const newDeck = await copyDeck(selectedDeck.id, newName);
+      router.push(`/decks/${newDeck.id}`);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
+    }
+  };
+
   const isOwner = !!user && user.id === selectedDeck.userId;
 
   return (
@@ -124,7 +137,7 @@ const DeckPage: React.FC = () => {
           <button className='deleteButton mr-2' onClick={() => setIsDeleteModalOpen(true)}>Delete Deck</button>
         </>
       )}
-      {user.id && (
+      {user && user.id  && (
         
       <button className='copyButton mr-2' onClick={() => setIsCopyModalOpen(true)}>Copy Deck</button>
       )}
@@ -163,6 +176,7 @@ const DeckPage: React.FC = () => {
         deck={selectedDeck}
         isOpen={isCopyModalOpen}
         onClose={() => setIsCopyModalOpen(false)}
+        onCopy={handleCopyDeck}
       />
     </div>
   );
