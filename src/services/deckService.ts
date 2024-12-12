@@ -344,6 +344,7 @@ export async function editDeck({ deckId, name, legality }: { deckId: string; nam
   setAuthToken(accessToken);
 
   const variables = { deckId, name, legality };
+
   const data = await graphqlClient.request<{ editDeck: MtGDeck }>(EDIT_DECK_MUTATION, variables);
   return data.editDeck as MtGDeck;
 }

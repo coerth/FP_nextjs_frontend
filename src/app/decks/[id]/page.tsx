@@ -16,7 +16,7 @@ import { MtGDeck } from '@/types/mtgDeck';
 
 const DeckPage: React.FC = () => {
   const { user } = useUser();
-  const { addCardToDeck, removeCardFromDeck, setSelectedDeck, selectedDeck, drawProbabilities, copyDeck } = useDecks();
+  const { addCardToDeck, removeCardFromDeck, setSelectedDeck, selectedDeck, drawProbabilities, copyDeck, editDeck } = useDecks();
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -103,8 +103,18 @@ const DeckPage: React.FC = () => {
     }
   };
 
-  const handleEditDeck = (updatedDeck: MtGDeck) => {
-    setSelectedDeck(updatedDeck.id);
+  const handleEditDeck = async (updatedDeck: MtGDeck) => {
+    try {
+      await editDeck(updatedDeck.id, updatedDeck.name, updatedDeck.legality);
+      await setSelectedDeck(updatedDeck.id);
+      setIsEditModalOpen(false);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
+    }
   };
 
   const handleDeleteDeck = () => {

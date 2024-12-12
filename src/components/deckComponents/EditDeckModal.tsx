@@ -18,8 +18,6 @@ const EditDeckModal: React.FC<EditDeckModalProps> = ({ deck, isOpen, onClose, on
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { editDeck } = useDecks();
-
   useEffect(() => {
     setName(deck.name);
     setLegality(deck.legality);
@@ -29,7 +27,8 @@ const EditDeckModal: React.FC<EditDeckModalProps> = ({ deck, isOpen, onClose, on
     setLoading(true);
     setError(null);
     try {
-      const updatedDeck = await editDeck(deck.id, name, legality);
+      const updatedDeck = { ...deck, name, legality };
+      onEdit(updatedDeck);
       onClose();
     } catch (err) {
       if (err instanceof Error) {
