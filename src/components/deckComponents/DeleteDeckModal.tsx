@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useDecks } from '@/context/DecksContext';
 import { MtGDeck } from '@/types/mtgDeck';
 import Modal from '@/components/Modal';
 import styles from '@/styles/DeckModal.module.css';
@@ -15,14 +14,11 @@ const DeleteDeckModal: React.FC<DeleteDeckModalProps> = ({ deck, isOpen, onClose
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { deleteDeck } = useDecks();
-
   const handleDelete = async () => {
     setLoading(true);
     setError(null);
     try {
-      await deleteDeck(deck.id);
-      onDelete();
+      await onDelete();
       onClose();
     } catch (err) {
       if (err instanceof Error) {
