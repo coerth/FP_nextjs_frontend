@@ -25,8 +25,7 @@ const CreateDeckForm: React.FC<CreateDeckFormProps> = ({ onClose }) => {
     setSuccess(null);
 
     try {
-      const cardInputs = cleanCardInputs(cards); // Use the utility function to clean the card inputs
-      console.log('Cleaned Card Inputs:', cardInputs); // Log the cleaned card inputs
+      const cardInputs = cleanCardInputs(cards); 
 
       const newDeck = await createDeck(name, legality, cardInputs);
       setSuccess(`Deck created successfully!`);
