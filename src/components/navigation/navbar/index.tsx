@@ -14,6 +14,7 @@ const Navbar = () => {
   const [currentSymbolColor, setCurrentSymbolColor] = useState('');
   const [showNavbar, setShowNavbar] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleSymbolChange = (color: string) => {
     setCurrentSymbolColor(color);
@@ -36,6 +37,11 @@ const Navbar = () => {
     }
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+  
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.addEventListener('scroll', controlNavbar);
@@ -55,30 +61,44 @@ const Navbar = () => {
           </div>
           <ul className={styles.navLinks}>
             <li>
-              <Link href="/cards">
-                <p style={linkClasses('/cards')}>Cards</p>
-              </Link>
+              <Link href="/cards" style={linkClasses('/cards')}>Cards</Link>
             </li>
             <li>
-              <Link href="/sets">
-                <p style={linkClasses('/sets')}>Sets</p>
-              </Link>
+              <Link href="/sets" style={linkClasses('/sets')}>Sets</Link>
             </li>
             <li>
-              <Link href="/decks">
-                <p style={linkClasses('/decks')}>Decks</p>
-              </Link>
+              <Link href="/decks" style={linkClasses('/decks')}>Decks</Link>
             </li>
             {user && (
               <li>
-                <Link href="/profile">
-                  <p style={linkClasses('/profile')}>Profile</p>
-                </Link>
+                <Link href="/profile" style={linkClasses('/profile')}>Profile</Link>
               </li>
             )}
           </ul>
+          <div
+            className={styles.hamburger}
+            onClick={toggleMobileMenu}
+            aria-expanded={isMobileMenuOpen}
+            aria-label="Toggle navigation menu"
+          >
+            <div className={styles.hamburgerLine}></div>
+            <div className={styles.hamburgerLine}></div>
+            <div className={styles.hamburgerLine}></div>
+          </div>
           <AuthButton />
         </div>
+        <div
+  className={`${
+    isMobileMenuOpen ? 'flex' : 'hidden'
+  } md:hidden flex-col items-center bg-gray-900 text-white w-full absolute top-12 left-0 z-40 transition-transform duration-300`}
+>
+  <Link href="/cards" onClick={toggleMobileMenu} className={styles.mobileMenuLink}>Cards</Link>
+  <Link href="/sets" onClick={toggleMobileMenu} className={styles.mobileMenuLink}>Sets</Link>
+  <Link href="/decks" onClick={toggleMobileMenu} className={styles.mobileMenuLink}>Decks</Link>
+  {user && (
+    <Link href="/profile" onClick={toggleMobileMenu} className={styles.mobileMenuLink}>Profile</Link>
+  )}
+</div>
       </div>
     </div>
   );

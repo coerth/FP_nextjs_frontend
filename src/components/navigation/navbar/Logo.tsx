@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { getManaSymbolUrl, getManaSymbolColorCode } from '@/utils/manaSymbols';
+import styles from '@/styles/navigation.module.css';
 
 const manaSymbols = ['W', 'U', 'B', 'R', 'G'];
 
@@ -29,7 +30,7 @@ const AnimatedLogo: React.FC<LogoProps> = ({ onSymbolChange }) => {
   return (
     <Link href="/">
       <motion.div
-        className="flex items-center space-x-2 relative"
+        className={styles.logoContainer}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
@@ -43,19 +44,17 @@ const AnimatedLogo: React.FC<LogoProps> = ({ onSymbolChange }) => {
           <Image
             src={currentSymbolUrl}
             alt="Mana symbol"
-            width={50}
-            height={50}
-            className="object-contain"
+            width={40}
+            height={40}
+            className={styles.logoImage}
           />
         </motion.div>
         <div className="relative">
-          <span
-            className="text-2xl font-bold px-2 relative z-10"
-          >
+          <span className={styles.logoText}>
             DeckBuild
           </span>
           <div
-            className="absolute bottom-0 left-0 w-full h-1"
+            className={styles.logoUnderline}
             style={{ backgroundColor: currentSymbolColor }}
           />
         </div>

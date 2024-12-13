@@ -1,35 +1,85 @@
 .navbar {
-    @apply bg-gray-900 text-white fixed w-full transition-transform duration-300 sticky top-0 z-50;
-  }
-  
-  .container {
-    @apply mx-auto px-4 h-full;
-  }
-  
-  .navbarContent {
-    @apply flex justify-between items-center h-full;
-  }
-  
-  .logoContainer {
-    @apply flex items-center h-full;
-  }
-  
-  .navLinks {
-    @apply hidden md:flex gap-x-6;
-  }
+  @apply bg-gray-900 text-white fixed w-full transition-transform duration-300 sticky top-0 z-50;
+}
 
-  .cancelButton {
-    @apply mr-4 bg-gray-600;
-  }
+.container {
+  @apply mx-auto px-4 h-full;
+}
 
-  .cancelButton:hover {
-    @apply bg-red-400;
-  }
+.navbarContent {
+  @apply flex justify-between items-center h-full;
+}
 
-  .submitButton {
-    @apply bg-blue-800;
-  }
+.logoContainer {
+  @apply flex items-center h-full;
+}
 
-  .submitButton:hover {
-    @apply bg-blue-600;
-  }
+.navLinks {
+  @apply hidden md:flex gap-x-6;
+}
+
+.hamburger {
+  @apply md:hidden flex flex-col justify-center items-center cursor-pointer;
+}
+
+.hamburgerLine {
+  @apply w-6 h-0.5 bg-white mb-1;
+}
+
+.mobileMenu {
+  @apply md:hidden flex flex-col items-center bg-gray-900 text-white w-full absolute top-16 left-0 z-40 transition-transform duration-300;
+}
+
+.mobileMenu.hidden {
+  @apply opacity-0;
+  display: none;
+}
+
+.mobileMenu.visible {
+  @apply opacity-100 block;
+}
+
+.cancelButton {
+  @apply mr-4 bg-gray-600;
+}
+
+.cancelButton:hover {
+  @apply bg-red-400;
+}
+
+.submitButton {
+  @apply bg-blue-800;
+}
+
+.submitButton:hover {
+  @apply bg-blue-600;
+}
+
+.mobileMenuLink {
+  @apply py-4 px-6 text-lg w-full text-center hover:bg-gray-700;
+}
+
+.navTitle {
+  @apply text-2xl font-bold md:text-3xl; /* Smaller on mobile, larger on larger screens */
+}
+
+.logoutButton, .loginButton {
+  @apply text-sm px-2 py-1 rounded bg-gray-600 hover:bg-gray-700 md:text-base md:px-4 md:py-2; /* Smaller on mobile */
+}
+
+/* New classes for the logo */
+.logoContainer {
+  @apply flex items-center space-x-2 relative;
+}
+
+.logoImage {
+  @apply object-contain w-10 h-10 sm:w-12 sm:h-12;
+}
+
+.logoText {
+  @apply text-xl sm:text-2xl font-bold px-2 relative z-10;
+}
+
+.logoUnderline {
+  @apply absolute bottom-0 left-0 w-full h-1;
+}

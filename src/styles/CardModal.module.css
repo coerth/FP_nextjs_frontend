@@ -1,222 +1,128 @@
 .card-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
 }
 
 .card-modal-content {
-  background: rgb(2, 2, 2);
-  padding: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-  z-index: 60;
-  max-width: 800px;
-  width: 100%;
-  display: flex;
+  @apply bg-gray-900 p-4 rounded-lg shadow-lg z-10 max-w-3xl w-full flex flex-col md:flex-row;
 }
 
 .card-modal-image-container {
-  flex-shrink: 0;
+  @apply flex-shrink-0 mb-4 md:mb-0;
 }
 
 .card-modal-image {
-  max-width: 300px;
-  border-radius: 0.5rem;
+  @apply max-w-xs rounded-lg;
 }
 
 .card-modal-body {
-  margin-left: 1rem;
-  flex-grow: 1;
+  @apply ml-0 md:ml-4 flex-grow;
 }
 
 .card-modal-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
+  @apply text-xl font-bold mb-4;
 }
 
 .card-modal-link {
-  color: #2563eb;
-  text-decoration: underline;
-  margin-bottom: 1rem;
-  display: inline-block;
+  @apply text-blue-500 underline mb-4 inline-block;
 }
 
 .card-modal-deck-selector {
-  margin-top: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: center;
+  @apply mt-4 flex flex-wrap gap-4 items-center;
 }
 
 .card-modal-deck-selector label {
-  font-weight: bold;
-  font-size: 0.9rem;
-  color: #ccc;
+  @apply font-bold text-sm text-gray-400;
 }
 
 .card-modal-deck-selector select,
 .card-modal-deck-selector input {
-  padding: 0.5rem;
-  font-size: 0.9rem;
-  border: 1px solid #444;
-  border-radius: 0.25rem;
-  background: #222;
-  color: #fff;
-  outline: none;
-  min-width: 120px;
+  @apply p-2 text-sm border border-gray-700 rounded bg-gray-800 text-white outline-none min-w-[120px];
 }
 
 .card-modal-deck-selector select:hover,
 .card-modal-deck-selector input:hover {
-  border-color: #2563eb;
+  @apply border-blue-500;
 }
 
 .card-modal-add-button {
-  background: #2563eb;
-  color: #fff;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  @apply bg-blue-500 text-white p-2 text-sm border-none rounded cursor-pointer transition-colors duration-300;
 }
 
 .card-modal-add-button:disabled {
-  background: #555;
-  cursor: not-allowed;
+  @apply bg-gray-600 cursor-not-allowed;
 }
 
 .card-modal-add-button:hover:not(:disabled) {
-  background: #1d4ed8;
+  @apply bg-blue-700;
 }
 
 .card-modal-error {
-  color: red;
-  margin-top: 0.5rem;
+  @apply text-red-500 mt-2;
 }
 
 .card-modal-alert {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-  padding: 1rem;
-  border-radius: 0.25rem;
-  margin-top: 1rem;
+  @apply bg-red-100 text-red-700 border border-red-300 p-4 rounded mt-4;
 }
 
 .card-modal-alert-buttons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.5rem;
+  @apply flex justify-end gap-2;
 }
 
 .card-modal-ignore-button {
-  background: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 0.25rem;
-  padding: 0.5rem 1rem;
+  @apply bg-blue-500 text-white border-none rounded p-2;
 }
 
 .card-modal-cancel-button {
-  background: #6c757d;
-  color: white;
-  border: none;
-  border-radius: 0.25rem;
-  padding: 0.5rem 1rem;
+  @apply bg-gray-600 text-white border-none rounded p-2;
 }
 
 .card-modal-legalities {
-  margin-top: 1rem;
+  @apply mt-4;
 }
 
-/* Responsive Grid Layout */
 .card-modal-legalities-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Adjust columns dynamically */
-  gap: 0.4rem; /* Space between badges */
+  @apply grid grid-cols-2 md:grid-cols-3 gap-2;
 }
 
-/* Badge Styling */
 .card-modal-legal-badge,
 .card-modal-not-legal-badge {
-  padding: 0.3rem; /* Reduce padding */
-  border-radius: 0.2rem; /* Slightly smaller corners */
-  text-align: center;
-  font-size: 0.8rem; /* Smaller font size */
-  font-weight: bold;
-  color: white;
-  display: flex; /* Use flexbox for consistent alignment */
-  align-items: center; /* Vertically center text */
-  justify-content: center; /* Horizontally center text */
-  height: 2rem; /* Reduced height for smaller badges */
-  white-space: nowrap; /* Prevents text wrapping */
-  overflow: hidden; /* Hides any overflowed text */
-  text-overflow: ellipsis; /* Adds ellipsis (...) for overflowed text */
+  @apply p-1 rounded text-center text-xs font-bold text-white flex items-center justify-center h-8 whitespace-nowrap overflow-hidden text-ellipsis;
 }
 
 .card-modal-legal-badge {
-  background-color: #16a34a; /* Green for LEGAL */
+  @apply bg-green-600;
 }
 
 .card-modal-not-legal-badge {
-  background-color: #6b7280; /* Gray for NOT LEGAL */
+  @apply bg-gray-600;
 }
 
-/* Adjust Badge Font Size on Small Screens */
 @media (max-width: 768px) {
   .card-modal-legal-badge,
   .card-modal-not-legal-badge {
-    font-size: 0.7rem; /* Further smaller text for smaller screens */
-    height: 1.8rem; /* Reduced badge height */
-    padding: 0.25rem;
+    @apply text-xs h-7 p-1;
   }
 }
 
-/* Adjust Badge Font Size for Extra Small Screens */
 @media (max-width: 480px) {
   .card-modal-legal-badge,
   .card-modal-not-legal-badge {
-    font-size: 0.65rem; /* Tiny text for small screens */
-    height: 1.6rem; /* Further reduced badge height */
-    padding: 0.2rem;
+    @apply text-xs h-6 p-1;
   }
 }
 
 .card-modal-close-button {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background: #f6413b;
-  color: white;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
+  @apply mt-4 p-2 bg-red-500 text-white border-none rounded cursor-pointer;
 }
 
 .card-modal-close-button:hover {
-  background: #2563eb;
+  @apply bg-blue-500;
 }
 
 .card-modal-keyword {
-  display: inline-block;
-  margin-right: 8px; 
-  margin-bottom: 8px; 
-  padding: 4px 8px; 
-  background-color: #222121; 
-  border-radius: 4px; 
+  @apply inline-block mr-2 mb-2 p-1 bg-gray-800 rounded;
 }
 
 .card-modal-input {
-  width: 40px;
-  padding: 2px; 
-  margin: 0; 
-  box-sizing: border-box; 
+  @apply w-10 p-1 m-0 box-border;
 }
-

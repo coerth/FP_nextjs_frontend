@@ -17,11 +17,11 @@ const ManaBar: React.FC<ManaBarProps> = ({ manaDistribution, onClick }) => {
         <div
           key={color}
           className="flex items-center justify-center cursor-pointer"
-          style={{ width: `${(count / totalMana) * 100}%`, backgroundColor: getManaSymbolColorCode(color) }}
+          style={{ width: `${(count / totalMana) * 100}%`, backgroundColor: getManaSymbolColorCode(color), minWidth: '40px' }}
           onClick={() => onClick(color)} 
         >
           <div className="flex items-center justify-center p-1">
-           <Image src={getManaSymbolUrl(color)} alt={color} width={24} height={24} className="w-6 h-6" />
+           <Image src={getManaSymbolUrl(color)} alt={color} width={24} height={24} className="w-6 h-6 sm:w-8 sm:h-8" />
           </div>
         </div>
       ))}

@@ -130,7 +130,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSearch }) => {
             placeholder="Search cards..."
             className="p-2 border bg-black border-gray-300 rounded-l"
           />
-          <button type="submit" className="p-2 bg-blue-500 text-white rounded-r">
+          <button type="submit" className="submit-button">
             Search
           </button>
         </div>
@@ -182,7 +182,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ handleSearch }) => {
           </span>
         ))}
       </div>
-      <button onClick={handleResetFilters} className="mt-4 p-2 bg-red-500 text-white rounded">
+      <button onClick={handleResetFilters} className="deleteButton">
         Reset Filters
       </button>
     </div>

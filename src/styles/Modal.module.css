@@ -1,36 +1,19 @@
 .modalOverlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 50;
-  }
-  
-  .modalContent {
-    background: #0a0a0a;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    z-index: 60;
-    max-width: 32rem;
-    width: 100%;
-  }
-  
-  .modalTitle {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-  }
-  
-  .modalCloseButton {
-    color: #3b82f6;
-    margin-top: 1rem;
-    display: inline-block;
-    cursor: pointer;
-  }
-  
-  .modalCloseButton:hover {
-    text-decoration: underline;
-  }
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+}
+
+.modalContent {
+  @apply bg-gray-900 p-4 rounded-lg shadow-lg z-50 max-w-3xl w-full;
+}
+
+.modalTitle {
+  @apply text-xl font-bold mb-4;
+}
+
+.modalCloseButton {
+  @apply text-blue-500 mt-4 inline-block cursor-pointer;
+}
+
+.modalCloseButton:hover {
+  @apply underline;
+}

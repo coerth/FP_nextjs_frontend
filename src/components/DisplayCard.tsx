@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { MtGCard } from '@/types/mtgCard';
 import { getManaSymbolUrl } from '@/utils/manaSymbols';
 import { motion } from 'framer-motion';
@@ -11,19 +11,6 @@ interface CardProps {
 
 const DisplayCard: React.FC<CardProps> = ({ card, onClick }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [showAlternateImage, setShowAlternateImage] = useState(false);
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (isHovered) {
-      timer = setTimeout(() => {
-        setShowAlternateImage(true);
-      }, 1000); // Show alternate image after 1 second
-    } else {
-      setShowAlternateImage(false);
-    }
-    return () => clearTimeout(timer);
-  }, [isHovered]);
 
   return (
     <motion.div
@@ -37,7 +24,7 @@ const DisplayCard: React.FC<CardProps> = ({ card, onClick }) => {
       <div className={styles.cardImageContainer}>
         {/* Main Image */}
         <img
-          src={showAlternateImage ? card.image_uris.border_crop : card.image_uris.border_crop}
+          src={card.image_uris.border_crop}
           alt={card.name}
           className={styles.cardImage}
         />
