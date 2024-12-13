@@ -224,35 +224,35 @@ body::before {
   }
 
   .editButton {
-    @apply p-2 rounded bg-blue-600 cursor-pointer transition-colors duration-300
+    @apply p-2 rounded bg-blue-800 cursor-pointer transition-colors duration-300
 
   }
 
   .editButton:hover {
-    @apply bg-blue-400;
+    @apply bg-blue-600;
   }
   
   .deleteButton {
-    @apply p-2 rounded bg-red-600 cursor-pointer transition-colors duration-300;
+    @apply p-2 rounded bg-red-800 cursor-pointer transition-colors duration-300;
   }
 
     .deleteButton:hover {
-        @apply bg-red-400;
+        @apply bg-red-600;
     }
   
   .copyButton {
-    @apply p-2 rounded bg-green-600 cursor-pointer transition-colors duration-300
+    @apply p-2 rounded bg-green-800 cursor-pointer transition-colors duration-300
   }
 
   .copyButton:hover {
-    @apply bg-green-400;
+    @apply bg-green-600;
   }
 
   .submit-button {
-    @apply p-2 bg-blue-700 text-white rounded-r cursor-pointer transition-colors duration-300;
+    @apply p-2 bg-blue-800 text-white rounded-r cursor-pointer transition-colors duration-300;
   }
   
   .submit-button:hover {
-    @apply bg-blue-500;
+    @apply bg-blue-600;
   }
 }

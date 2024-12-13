@@ -10,7 +10,6 @@ interface CardProps {
 }
 
 const DisplayCard: React.FC<CardProps> = ({ card, onClick }) => {
-  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div
@@ -18,11 +17,8 @@ const DisplayCard: React.FC<CardProps> = ({ card, onClick }) => {
       whileTap={{ scale: 0.95 }}
       className={styles.cardContainer}
       onClick={onClick}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <div className={styles.cardImageContainer}>
-        {/* Main Image */}
         <img
           src={card.image_uris.border_crop}
           alt={card.name}

@@ -152,17 +152,17 @@ const DeckPage: React.FC = () => {
       <div className="flex space-x-2">
       {isOwner && (
         <>
-          <button className='editButton mr-2' onClick={() => setIsEditModalOpen(true)}>Edit Deck</button>
-          <button className='deleteButton mr-2' onClick={() => setIsDeleteModalOpen(true)}>Delete Deck</button>
+          <button className='editButton' onClick={() => setIsEditModalOpen(true)}>Edit Deck</button>
+          <button className='deleteButton' onClick={() => setIsDeleteModalOpen(true)}>Delete Deck</button>
         </>
       )}
       {user && user.id  && (
         
-      <button className='copyButton mr-2' onClick={() => setIsCopyModalOpen(true)}>Copy Deck</button>
+      <button className='copyButton' onClick={() => setIsCopyModalOpen(true)}>Copy Deck</button>
       )}
        </div>
        </div>
-      <p>Legality: {selectedDeck.legality}</p>
+      <p className='inline-block mr-2 mb-2 p-1'>Legality: {selectedDeck.legality}</p>
       {!showStats && <ManaBar manaDistribution={selectedDeck.deckStats.totalManaSymbols} onClick={handleManaBarClick} />}
       {showStats && (
         <>

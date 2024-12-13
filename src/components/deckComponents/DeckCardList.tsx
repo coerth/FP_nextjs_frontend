@@ -38,8 +38,8 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, isOwner, onIncreaseC
             
             {isOwner && (
             <div className="flex space-x-2">
-              <button onClick={() => onIncreaseCardCount(card.id)} className="bg-green-500 text-white px-2 py-1 rounded">+</button>
-              <button onClick={() => onDecreaseCardCount(card.id)} className="bg-red-500 text-white px-2 py-1 rounded">-</button>
+              <button onClick={() => onIncreaseCardCount(card.id)} className="copyButton">+</button>
+              <button onClick={() => onDecreaseCardCount(card.id)} className="deleteButton">-</button>
             </div>
           )}
             <p className={styles.cardCount}>Count: {count}</p>
