@@ -12,6 +12,7 @@
     "@apollo/client": "^3.11.0-rc.2",
     "@apollo/experimental-nextjs-app-support": "^0.11.3",
     "@auth0/nextjs-auth0": "^3.5.0",
+    "@sentry/nextjs": "^8.45.0",
     "chart.js": "^4.4.6",
     "chartjs-plugin-datalabels": "^2.2.0",
     "dotenv": "^16.4.7",

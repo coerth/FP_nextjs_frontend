@@ -32,6 +32,7 @@ const DeckCardList: React.FC<DeckCardListProps> = ({ cards, isOwner, onIncreaseC
                   src={getManaSymbolUrl(symbol)}
                   alt={symbol}
                   className="w-4 h-4"
+                  loading='lazy'
                 />
               ))}
             </div>

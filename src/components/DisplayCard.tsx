@@ -23,6 +23,7 @@ const DisplayCard: React.FC<CardProps> = ({ card, onClick }) => {
           src={card.image_uris.border_crop}
           alt={card.name}
           className={styles.cardImage}
+          loading='lazy'
         />
       </div>
       <div className={styles.cardDetails}>
@@ -35,6 +36,7 @@ const DisplayCard: React.FC<CardProps> = ({ card, onClick }) => {
               src={getManaSymbolUrl(symbol)}
               alt={symbol}
               className="w-4 h-4"
+              loading='lazy'
             />
           ))}
         </div>

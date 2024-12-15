@@ -7,7 +7,6 @@ const useInfiniteScroll = (loading: boolean, callback: () => void) => {
       const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
       const clientHeight = document.documentElement.clientHeight || window.innerHeight;
 
-      // Prevent infinite scrolling if content fits within the viewport
       if (scrollHeight <= clientHeight) return;
 
       if (scrollTop + clientHeight >= scrollHeight - 5 && !loading) {

@@ -112,11 +112,11 @@
 }
 
 .card-modal-close-button {
-  @apply mt-4 p-2 bg-red-500 text-white border-none rounded cursor-pointer;
+  @apply mt-4 p-2 bg-red-800 text-white border-none rounded cursor-pointer;
 }
 
 .card-modal-close-button:hover {
-  @apply bg-blue-500;
+  @apply bg-red-600;
 }
 
 .card-modal-keyword {

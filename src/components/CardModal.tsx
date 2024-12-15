@@ -111,7 +111,7 @@ const CardModal: React.FC<CardModalProps> = ({ card, isOpen, onClose }) => {
             </div>
             <button
               onClick={handleAddCard}
-              className={styles['card-modal-add-button']}
+              className="editButton"
               disabled={state.loading}
             >
               {state.loading ? 'Adding...' : 'Add Card'}
@@ -135,7 +135,7 @@ const CardModal: React.FC<CardModalProps> = ({ card, isOpen, onClose }) => {
                 </button>
                 <button
                   onClick={() => setShowAlert(false)}
-                  className={styles['card-modal-cancel-button']}
+                  className="{styles['card-modal-cancel-button']}"
                 >
                   Cancel
                 </button>

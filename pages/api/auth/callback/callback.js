@@ -19,48 +19,8 @@ export default handleAuth({
         return;
       }
 
-      const { user, accessToken } = session;
-      console.log('User object:', user); // Log the user object for debugging
-      console.log('Access Token:', accessToken); // Log the access token for debugging
-
-      const graphQLClient = new GraphQLClient(graphqlEndpoint, {
-        headers: {
-          authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      // Check if the user exists in the database
-      const query = gql`
-        query GetUser($email: String!) {
-          user(email: $email) {
-            id
-            email
-          }
-        }
-      `;
-
-      const variables = { email: user.email };
-      const data = await graphQLClient.request(query, variables);
-
-      // If the user does not exist, create a new user
-      if (!data.user) {
-        const mutation = gql`
-          mutation CreateUser($sub: String!, $email: String!, $name: String!) {
-            createUser(sub: $sub, email: $email, name: $name) {
-              id
-              email
-            }
-          }
-        `;
-
-        const mutationVariables = {
-          sub: user.sub,
-          email: user.email,
-          name: user.name,
-        };
-
-        await graphQLClient.request(mutation, mutationVariables);
-      }
+      // Call the user service to handle the user callback logic
+      await handleUserCallback(req, res, graphqlEndpoint);
 
       // Redirect to the main page or any other desired page
       return NextResponse.redirect(new URL('/', req.url));
