@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { fetchCards } from '@/services/cardService';
+import { useFetchCards } from '@/hooks/useFetchCards';
 import { MtGCard } from '@/types/mtgCard';
 import DisplayCard from '@/components/DisplayCard';
 import CardModal from '@/components/CardModal';
@@ -22,6 +22,7 @@ const CardList: React.FC<CardListProps> = ({ initialParams = {}, showSearchBar =
   const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
+  const { getCards } = useFetchCards();
 
   const limit = 20;
 
@@ -66,7 +67,7 @@ const CardList: React.FC<CardListProps> = ({ initialParams = {}, showSearchBar =
     }
 
     try {
-      const newCards: MtGCard[] = await fetchCards(queryParams);
+      const newCards: MtGCard[] = await getCards(page, queryParams);
       const cardsWithPage = newCards.map(card => ({ ...card, page }));
 
       setCards((prevCards) => {

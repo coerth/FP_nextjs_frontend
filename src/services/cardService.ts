@@ -57,6 +57,7 @@ export async function fetchCards(params: FetchCardsParams): Promise<MtGCard[]> {
   setAuthToken(accessToken);
 
   const variables = { params };
+
   const data = await graphqlClient.request<{ cards: MtGCard[] }>(FETCH_CARDS_QUERY, variables);
   return data.cards as MtGCard[];
 }
