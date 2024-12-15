@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { fetchSets } from '@/services/setService';
 import { MtgSet } from '@/types/mtgSet';
 import DisplaySets from '@/components/DisplaySets';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+import { useFetchSets } from '@/hooks/useFetchSets';
 
 const SetsPage: React.FC = () => {
   const [sets, setSets] = useState<MtgSet[]>([]);
@@ -13,9 +13,12 @@ const SetsPage: React.FC = () => {
   const [page, setPage] = useState<number>(1);
   const limit = 30;
 
+  const { getSets } = useFetchSets();
+
   const loadSets = async (page: number) => {
+    setLoading(true);
     try {
-      const fetchedSets = await fetchSets({ limit, skip: (page - 1) * limit });
+      const fetchedSets = await getSets(page, { limit, skip: (page - 1) * limit });
       setSets((prevSets) => [...prevSets, ...fetchedSets]);
     } catch (err) {
       setError('Failed to fetch sets');
@@ -41,7 +44,7 @@ const SetsPage: React.FC = () => {
   return (
     <div>
       <div className="container">
-      <DisplaySets sets={sets} />
+        <DisplaySets sets={sets} />
       </div>
       {loading && <div>Loading more sets...</div>}
     </div>
