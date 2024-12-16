@@ -50,9 +50,6 @@ const CardModal: React.FC<CardModalProps> = ({ card, isOpen, onClose }) => {
     return card.legalities[deckLegality as keyof typeof card.legalities] === 'legal';
   };
 
-  // const legalFormats = Object.keys(card.legalities).filter(
-  //   (format) => card.legalities[format] === 'legal'
-  // );
 
   return (
     <div className={styles['card-modal-overlay']} onClick={onClose}>
@@ -79,44 +76,46 @@ const CardModal: React.FC<CardModalProps> = ({ card, isOpen, onClose }) => {
               ))}
             </>
           )}
-          <div className={styles['card-modal-deck-selector']}>
-            <div>
-              <label htmlFor="deck">Add to Deck:</label>
-              <select
-                id="deck"
-                value={state.selectedDeckId || ''}
-                onChange={(e) => setSelectedDeckId(e.target.value)}
-                className={styles['card-modal-select']}
-              >
-                <option value="" disabled>
-                  Select a deck
-                </option>
-                {decks.map((deck) => (
-                  <option key={deck.id} value={deck.id}>
-                    {deck.name}
+          {decks.length > 0 && (
+            <div className={styles['card-modal-deck-selector']}>
+              <div>
+                <label htmlFor="deck">Add to Deck:</label>
+                <select
+                  id="deck"
+                  value={state.selectedDeckId || ''}
+                  onChange={(e) => setSelectedDeckId(e.target.value)}
+                  className={styles['card-modal-select']}
+                >
+                  <option value="" disabled>
+                    Select a deck
                   </option>
-                ))}
-              </select>
+                  {decks.map((deck) => (
+                    <option key={deck.id} value={deck.id}>
+                      {deck.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="count">Count:</label>
+                <input
+                  type="number"
+                  id="count"
+                  value={state.count}
+                  onChange={(e) => setCount(Number(e.target.value))}
+                  min="1"
+                  className={styles['card-modal-input']}
+                />
+              </div>
+              <button
+                onClick={handleAddCard}
+                className="editButton"
+                disabled={state.loading}
+              >
+                {state.loading ? 'Adding...' : 'Add Card'}
+              </button>
             </div>
-            <div>
-              <label htmlFor="count">Count:</label>
-              <input
-                type="number"
-                id="count"
-                value={state.count}
-                onChange={(e) => setCount(Number(e.target.value))}
-                min="1"
-                className={styles['card-modal-input']}
-              />
-            </div>
-            <button
-              onClick={handleAddCard}
-              className="editButton"
-              disabled={state.loading}
-            >
-              {state.loading ? 'Adding...' : 'Add Card'}
-            </button>
-          </div>
+          )}
           {state.error && <p className={styles['card-modal-error']}>{state.error}</p>}
 
           {showAlert && (

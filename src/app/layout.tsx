@@ -34,9 +34,7 @@ export default function RootLayout({
         >
           <Providers>
           <Navigation />
-          <DecksProvider>
              {children}
-          </DecksProvider>
           </Providers>
       </body>
     </html>

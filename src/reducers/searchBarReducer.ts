@@ -44,7 +44,7 @@ const searchBarReducer = (state: SearchBarState, action: SearchBarAction): Searc
       return { ...state, activeFilters: newFilters };
     case 'RESET_FILTERS':
       return initialState;
-    case 'SET_SET_ID': // Handle setting setId
+    case 'SET_SET_ID': 
       return { ...state, setId: action.payload };
     default:
       return state;

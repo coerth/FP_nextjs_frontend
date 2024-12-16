@@ -28,12 +28,12 @@ const Navbar = () => {
 
   const controlNavbar = () => {
     if (typeof window !== 'undefined') {
-      if (window.scrollY > lastScrollY) { // if scroll down hide the navbar
+      if (window.scrollY > lastScrollY) {
         setShowNavbar(false);
-      } else { // if scroll up show the navbar
+      } else { 
         setShowNavbar(true);
       }
-      setLastScrollY(window.scrollY); // remember current page location to use in the next move
+      setLastScrollY(window.scrollY); 
     }
   };
 
